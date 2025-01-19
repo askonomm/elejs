@@ -8,12 +8,12 @@ class Composer
     {
         $varsStr = implode(' + ', $vars);
 
-        return "console.log($varsStr);";
+        return "console.log($varsStr)";
     }
 
     public static function var(string $name, mixed $value): string
     {
-        return "let $name = {$value};";
+        return "let $name = {$value}";
     }
 
     public static function function(string $name, array $params, array $contents): string
@@ -31,7 +31,7 @@ class Composer
 
     public static function return(mixed $var): string
     {
-        return "return {$var};";
+        return "return {$var}";
     }
 
     public static function functionCall(string $name, array $args): string
@@ -69,5 +69,14 @@ class Composer
         $_js .= "\n}";
 
         return $_js;
+    }
+
+    public static function ternary(string $cond, string | null $if, string $else): string
+    {
+        if (is_null($if)) {
+            return "{$cond} || {$else}";
+        }
+
+        return "{$cond} ? {$if} : {$else}";
     }
 }

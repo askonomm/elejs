@@ -58,18 +58,18 @@ Most of the things are not yet supported. Only very basic PHP can currently be t
 - [x] `BinaryOp/BitwiseAnd`
 - [x] `BinaryOp/BitwiseOr`
 - [x] `BinaryOp/BitwiseXor`
-- [ ] `BinaryOp/BooleanAnd`
+- [x] `BinaryOp/BooleanAnd`
 - [x] `BinaryOp/BooleanOr`
-- [ ] `BinaryOp/Coalesce`
+- [x] `BinaryOp/Coalesce`
 - [ ] `BinaryOp/Concat`
 - [x] `BinaryOp/Div`
 - [x] `BinaryOp/Equal`
 - [x] `BinaryOp/Greater`
 - [x] `BinaryOp/GreaterOrEqual`
 - [x] `BinaryOp/Identical`
-- [ ] `BinaryOp/LogicalAnd`
-- [ ] `BinaryOp/LogicalOr`
-- [ ] `BinaryOp/LogicalXor`
+- [x] `BinaryOp/LogicalAnd`
+- [x] `BinaryOp/LogicalOr`
+- [x] `BinaryOp/LogicalXor`
 - [x] `BinaryOp/Minus`
 - [x] `BinaryOp/Mod`
 - [x] `BinaryOp/Mul`
@@ -130,7 +130,7 @@ Most of the things are not yet supported. Only very basic PHP can currently be t
 - [ ] `ShellExec`
 - [ ] `StaticCall`
 - [ ] `StaticPropertyFetch`
-- [ ] `Ternary`
+- [x] `Ternary`
 - [ ] `Throw_`
 - [ ] `UnaryMinus`
 - [ ] `UnaryPlus`

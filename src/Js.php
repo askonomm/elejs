@@ -17,7 +17,8 @@ class Js
     private ?string $rootDir;
     private string $js = "";
 
-    public function __construct(string $contents, string $phpVersion, ?string $rootDir = null) {
+    public function __construct(string $contents, string $phpVersion, ?string $rootDir = null)
+    {
         $astParser = new ParserFactory()->createForVersion(PhpVersion::fromString($phpVersion));
         $this->phpVersion = $phpVersion;
         $this->ast = $astParser->parse($contents);
@@ -40,7 +41,7 @@ class Js
 
     private function traverseTree(?array $tree = []): void
     {
-        foreach($tree as $node) {
+        foreach ($tree as $node) {
             $this->js .= $this->parseNode($node) . "\n";
         }
     }
@@ -95,6 +96,14 @@ class Js
         return Composer::binaryOp($left, $right, $op);
     }
 
+    private function parseBinaryOpLogical(Node\Expr\BinaryOp $node, string $op): string
+    {
+        $left = $this->parseNode($node->left);
+        $right = $this->parseNode($node->right);
+
+        return "{$left} {$op} {$right}";
+    }
+
     private function parseString(Node\Scalar\String_ $node): string
     {
         return "\"$node->value\"";
@@ -142,6 +151,17 @@ class Js
         return Composer::bitwiseNot($this->parseNode($node->expr));
     }
 
+    private function parseTernary(Node\Expr\Ternary $node): string
+    {
+        var_dump($node);
+
+        $cond = $this->parseNode($node->cond);
+        $if = $node->if ? $this->parseNode($node->if) : null;
+        $else = $this->parseNode($node->else);
+
+        return Composer::ternary($cond, $if, $else);
+    }
+
     private function parseNode(mixed $node): string
     {
         return match(get_class($node)) {
@@ -156,9 +176,11 @@ class Js
             Node\Expr\BooleanNot::class => $this->parseBooleanNot($node),
             Node\Expr\Variable::class => $this->parseVariable($node),
             Node\Expr\FuncCall::class => $this->parseFunctionCall($node),
-            Node\Expr\BinaryOp\BitwiseAnd::class => $this->parseBinaryOp($node, "&&"),
+            Node\Expr\Ternary::class => $this->parseTernary($node),
+            Node\Expr\BinaryOp\BitwiseAnd::class => $this->parseBinaryOp($node, "&"),
             Node\Expr\BinaryOp\BitwiseOr::class => $this->parseBinaryOp($node, "|"),
             Node\Expr\BinaryOp\BitwiseXor::class => $this->parseBinaryOp($node, "^"),
+            Node\Expr\BinaryOp\BooleanAnd::class => $this->parseBinaryOp($node, "&&"),
             Node\Expr\BinaryOp\BooleanOr::class => $this->parseBinaryOp($node, "||"),
             Node\Expr\BinaryOp\Plus::class => $this->parseBinaryOp($node, "+"),
             Node\Expr\BinaryOp\Minus::class => $this->parseBinaryOp($node, "-"),
@@ -176,12 +198,16 @@ class Js
             Node\Expr\BinaryOp\SmallerOrEqual::class => $this->parseBinaryOp($node, "<="),
             Node\Expr\BinaryOp\Spaceship::class => $this->parseBinaryOp($node, "<=>"),
             Node\Expr\BinaryOp\Mul::class => $this->parseBinaryOp($node, "*"),
+            Node\Expr\BinaryOp\Coalesce::class => $this->parseBinaryOp($node, "??"),
+            Node\Expr\BinaryOp\LogicalAnd::class => $this->parseBinaryOpLogical($node, "&&"),
+            Node\Expr\BinaryOp\LogicalOr::class => $this->parseBinaryOpLogical($node, "||"),
+            Node\Expr\BinaryOp\LogicalXor::class => $this->parseBinaryOpLogical($node, "^"),
             Node\Param::class => $this->parseParam($node),
             Node\Arg::class => $this->parseArg($node),
             Node\Scalar\String_::class => $this->parseString($node),
             Node\Scalar\Int_::class => $node->value,
             Node\Scalar\Float_::class => $node->value,
-            default => "[" . get_class($node) . " not supported yet]\n"
+            default => "[" . get_class($node) . " not supported yet]"
         };
     }
 
