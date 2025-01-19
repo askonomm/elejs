@@ -33,6 +33,7 @@ $js = Js::fromString(contents: '<?php echo "hello, world";', version: '8.4');
 
 If you also `include` other PHP files within your source PHP file / string, make sure to add the third 
 parameter `rootDir` to where the root of those includes will be, so that you can then do relative path declarations. 
+There is no support for `__DIR__` or the like just yet, so only relative paths work.
 
 ## Support
 

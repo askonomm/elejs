@@ -28,12 +28,12 @@ class Js
         $this->traverseTree($this->ast);
     }
 
-    public static function fromFile(string $path, string $version, ?string $rootDir = null): string
+    public static function fromFile(string $path, string $version = '8.4', ?string $rootDir = null): string
     {
         return new self(file_get_contents($path), $version, $rootDir)->toString();
     }
 
-    public static function fromString(string $contents, string $version, ?string $rootDir = null): string
+    public static function fromString(string $contents, string $version = '8.4', ?string $rootDir = null): string
     {
         return new self($contents, $version, $rootDir)->toString();
     }
