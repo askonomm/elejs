@@ -38,7 +38,8 @@ There is no support for `__DIR__` or the like just yet, so only relative paths w
 ## Support
 
 Most of the things are not yet supported. Only very basic PHP can currently be transpiled. You can check the 
-[examples](https://github.com/askonomm/js/tree/master/examples) directory for what works.
+[examples](https://github.com/askonomm/js/tree/master/examples) directory for what works. There also is no JS interop yet, 
+meaning you can't call JS API's from PHP. 
 
 ### `Node/Expr`
 
