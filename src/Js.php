@@ -42,7 +42,7 @@ class Js
     private function traverseTree(?array $tree = []): void
     {
         foreach ($tree as $node) {
-            $this->js .= $this->parseNode($node) . "\n";
+            $this->js .= $this->parseNode($node) . ";\n";
         }
     }
 
@@ -153,8 +153,6 @@ class Js
 
     private function parseTernary(Node\Expr\Ternary $node): string
     {
-        var_dump($node);
-
         $cond = $this->parseNode($node->cond);
         $if = $node->if ? $this->parseNode($node->if) : null;
         $else = $this->parseNode($node->else);
@@ -198,7 +196,9 @@ class Js
             Node\Expr\BinaryOp\SmallerOrEqual::class => $this->parseBinaryOp($node, "<="),
             Node\Expr\BinaryOp\Spaceship::class => $this->parseBinaryOp($node, "<=>"),
             Node\Expr\BinaryOp\Mul::class => $this->parseBinaryOp($node, "*"),
+            Node\Expr\BinaryOp\Concat::class => $this->parseBinaryOp($node, "."),
             Node\Expr\BinaryOp\Coalesce::class => $this->parseBinaryOp($node, "??"),
+            Node\Expr\BinaryOp\Pow::class => $this->parseBinaryOp($node, "**"),
             Node\Expr\BinaryOp\LogicalAnd::class => $this->parseBinaryOpLogical($node, "&&"),
             Node\Expr\BinaryOp\LogicalOr::class => $this->parseBinaryOpLogical($node, "||"),
             Node\Expr\BinaryOp\LogicalXor::class => $this->parseBinaryOpLogical($node, "^"),

@@ -26,3 +26,5 @@ $x = $m ?: $l;
 $y = $m and $x;
 $z = $m or $x;
 $zz = 1 xor 2 | (2 and 3);
+$zzz = "asdasd" . "123123";
+$zzzz = 22 ** 44;
