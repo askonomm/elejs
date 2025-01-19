@@ -44,6 +44,11 @@ class Composer
         return "{$left} {$op} {$right}";
     }
 
+    public static function bitwiseNot(string $value): string
+    {
+        return "~{$value}";
+    }
+
     public static function booleanNot(string $value): string
     {
         return "!{$value}";

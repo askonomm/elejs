@@ -137,6 +137,11 @@ class Js
         return Composer::booleanNot($this->parseNode($node->expr));
     }
 
+    private function parseBitwiseNot(Node\Expr\BitwiseNot $node): string
+    {
+        return Composer::bitwiseNot($this->parseNode($node->expr));
+    }
+
     private function parseNode(mixed $node): string
     {
         return match(get_class($node)) {
@@ -147,10 +152,13 @@ class Js
             Node\Stmt\If_::class => $this->parseIf($node),
             Node\Expr\Include_::class => $this->parseInclude($node),
             Node\Expr\Assign::class => $this->parseAssign($node),
+            Node\Expr\BitwiseNot::class => $this->parseBitwiseNot($node),
             Node\Expr\BooleanNot::class => $this->parseBooleanNot($node),
             Node\Expr\Variable::class => $this->parseVariable($node),
             Node\Expr\FuncCall::class => $this->parseFunctionCall($node),
+            Node\Expr\BinaryOp\BitwiseAnd::class => $this->parseBinaryOp($node, "&&"),
             Node\Expr\BinaryOp\BitwiseOr::class => $this->parseBinaryOp($node, "|"),
+            Node\Expr\BinaryOp\BitwiseXor::class => $this->parseBinaryOp($node, "^"),
             Node\Expr\BinaryOp\BooleanOr::class => $this->parseBinaryOp($node, "||"),
             Node\Expr\BinaryOp\Plus::class => $this->parseBinaryOp($node, "+"),
             Node\Expr\BinaryOp\Minus::class => $this->parseBinaryOp($node, "-"),
@@ -159,6 +167,8 @@ class Js
             Node\Expr\BinaryOp\Mod::class => $this->parseBinaryOp($node, "%"),
             Node\Expr\BinaryOp\Equal::class => $this->parseBinaryOp($node, "=="),
             Node\Expr\BinaryOp\NotEqual::class => $this->parseBinaryOp($node, "!="),
+            Node\Expr\BinaryOp\ShiftLeft::class => $this->parseBinaryOp($node, "<<"),
+            Node\Expr\BinaryOp\ShiftRight::class => $this->parseBinaryOp($node, ">>"),
             Node\Param::class => $this->parseParam($node),
             Node\Arg::class => $this->parseArg($node),
             Node\Scalar\String_::class => $this->parseString($node),

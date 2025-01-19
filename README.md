@@ -55,9 +55,9 @@ Most of the things are not yet supported. Only very basic PHP can currently be t
 - [ ] `AssignOp/Pow`
 - [ ] `AssignOp/ShiftLeft`
 - [ ] `AssignOp/ShiftRight`
-- [ ] `BinaryOp/BitwiseAnd`
+- [x] `BinaryOp/BitwiseAnd`
 - [x] `BinaryOp/BitwiseOr`
-- [ ] `BinaryOp/BitwiseXor`
+- [x] `BinaryOp/BitwiseXor`
 - [ ] `BinaryOp/BooleanAnd`
 - [x] `BinaryOp/BooleanOr`
 - [ ] `BinaryOp/Coalesce`
@@ -77,8 +77,8 @@ Most of the things are not yet supported. Only very basic PHP can currently be t
 - [x] `BinaryOp/NotIdentical`
 - [x] `BinaryOp/Plus`
 - [ ] `BinaryOp/Pow`
-- [ ] `BinaryOp/ShiftLeft`
-- [ ] `BinaryOp/ShiftRight`
+- [x] `BinaryOp/ShiftLeft`
+- [x] `BinaryOp/ShiftRight`
 - [ ] `BinaryOp/Smaller`
 - [ ] `BinaryOp/SmallerOrEqual`
 - [ ] `BinaryOp/Spaceship`
@@ -97,7 +97,7 @@ Most of the things are not yet supported. Only very basic PHP can currently be t
 - [ ] `AssignOp`
 - [ ] `AssignRef`
 - [ ] `BinaryOp`
-- [ ] `BitwiseNot`
+- [x] `BitwiseNot`
 - [x] `BooleanNot`
 - [ ] `CallLike`
 - [ ] `Cast`
