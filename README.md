@@ -89,7 +89,7 @@ Most of the things are not yet supported. Only very basic PHP can currently be t
 - [ ] `Cast/Object_`
 - [ ] `Cast/String_`
 - [ ] `Cast/Unset_`
-- [ ] `Array_`
+- [x] `Array_`
 - [ ] `ArrayDimFetch`
 - [ ] `ArrayItem`
 - [ ] `ArrowFunction`
@@ -212,7 +212,7 @@ Most of the things are not yet supported. Only very basic PHP can currently be t
 ### `Node/`
 
 - [x] `Arg`
-- [ ] `ArrayItem`
+- [x] `ArrayItem`
 - [ ] `Attribute`
 - [ ] `AttributeGroup`
 - [ ] `ClosureUse`

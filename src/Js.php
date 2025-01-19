@@ -2,6 +2,7 @@
 
 namespace Asko\Js;
 
+use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Const_;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Expr;
@@ -53,7 +54,7 @@ class Js
 
     private function parseExpressionStmt(Stmt\Expression $node): string
     {
-        return $this->parseNode($node->expr);
+        return $this->parseNode($node->expr) . ";";
     }
 
     private function parseEchoStmt(Stmt\Echo_ $node): string
@@ -194,6 +195,26 @@ class Js
         return Composer::const($node->name, $this->parseNode($node->value));
     }
 
+    private function parseArray(Expr\Array_ $node): string
+    {
+        $noKeys = array_all($node->items, fn(ArrayItem $x) => $x->key === null);
+
+        if ($noKeys) {
+            return Composer::array(array_map(fn($x) => $this->parseNode($x), $node->items));
+        }
+
+        return Composer::object(array_map(fn($x) => $this->parseNode($x), $node->items));
+    }
+
+    private function parseArrayItem(ArrayItem $node): string
+    {
+        if (!$node->key) {
+            return $this->parseNode($node->value);
+        }
+
+        return "{$this->parseNode($node->key)}: {$this->parseNode($node->value)}";
+    }
+
     private function parseNode(mixed $node): string
     {
         return match (get_class($node)) {
@@ -203,6 +224,7 @@ class Js
             Stmt\Return_::class => $this->parseReturnStmt($node),
             Stmt\If_::class => $this->parseIfStmt($node),
             Stmt\Const_::class => $this->parseConstStmt($node),
+            Expr\Array_::class => $this->parseArray($node),
             Expr\Include_::class => $this->parseInclude($node),
             Expr\Assign::class => $this->parseAssign($node),
             Expr\BitwiseNot::class => $this->parseBitwiseNot($node),
@@ -247,12 +269,13 @@ class Js
             Expr\BinaryOp\Mul::class => $this->parseBinaryOp($node, "*"),
             Expr\BinaryOp\Coalesce::class => $this->parseBinaryOp($node, "??"),
             Expr\BinaryOp\Pow::class => $this->parseBinaryOp($node, "**"),
-            Param::class => $this->parseParam($node),
-            Arg::class => $this->parseArg($node),
-            Const_::class => $this->parseConst($node),
             Scalar\String_::class => $this->parseString($node),
             Scalar\Int_::class => $node->value,
             Scalar\Float_::class => $node->value,
+            Param::class => $this->parseParam($node),
+            Arg::class => $this->parseArg($node),
+            ArrayItem::class => $this->parseArrayItem($node),
+            Const_::class => $this->parseConst($node),
             default => "[" . get_class($node) . " not supported yet]"
         };
     }

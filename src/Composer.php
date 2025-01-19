@@ -99,4 +99,14 @@ class Composer
     {
         return "{$var}--";
     }
+
+    public static function array(array $items): string
+    {
+        return "[" . implode(', ', $items) . "]";
+    }
+
+    public static function object(array $items): string
+    {
+        return "{" . implode(', ', $items) . "}";
+    }
 }
