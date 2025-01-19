@@ -169,7 +169,7 @@ Most of the things are not yet supported. Only very basic PHP can currently be t
 - [ ] `ClassConst`
 - [ ] `ClassLike`
 - [ ] `ClassMethod`
-- [ ] `Const_`
+- [x] `Const_`
 - [ ] `Continue_`
 - [ ] `Declare_`
 - [ ] `DeclareDeclare`
@@ -217,7 +217,7 @@ Most of the things are not yet supported. Only very basic PHP can currently be t
 - [ ] `AttributeGroup`
 - [ ] `ClosureUse`
 - [ ] `ComplexType`
-- [ ] `Const_`
+- [x] `Const_`
 - [ ] `DeclareItem`
 - [ ] `Expr`
 - [ ] `FunctionLike`

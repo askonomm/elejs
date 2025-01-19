@@ -2,6 +2,7 @@
 
 namespace Asko\Js;
 
+use PhpParser\Node\Const_;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Scalar;
@@ -50,17 +51,17 @@ class Js
         }
     }
 
-    private function parseExpression(Stmt\Expression $node): string
+    private function parseExpressionStmt(Stmt\Expression $node): string
     {
         return $this->parseNode($node->expr);
     }
 
-    private function parseEcho(Stmt\Echo_ $node): string
+    private function parseEchoStmt(Stmt\Echo_ $node): string
     {
-        return Composer::print(array_map(fn($p) => $this->parseNode($p), $node->exprs));
+        return Composer::print(array_map(fn($p) => $this->parseNode($p), $node->exprs)) . ";";
     }
 
-    private function parseFunction(Stmt\Function_ $node): string
+    private function parseFunctionStmt(Stmt\Function_ $node): string
     {
         return Composer::function(
             name: $node->name->name,
@@ -69,9 +70,9 @@ class Js
         );
     }
 
-    private function parseReturn(Stmt\Return_ $node): string
+    private function parseReturnStmt(Stmt\Return_ $node): string
     {
-        return Composer::return($this->parseNode($node->expr));
+        return Composer::return($this->parseNode($node->expr)) . ";";
     }
 
     private function parseAssign(Expr\Assign $node): string
@@ -115,7 +116,7 @@ class Js
         return $this->parseNode($node->value);
     }
 
-    private function parseIf(Stmt\If_ $node): string
+    private function parseIfStmt(Stmt\If_ $node): string
     {
         return Composer::if(
             cond: $this->parseNode($node->cond),
@@ -175,14 +176,33 @@ class Js
         return Composer::postDec($this->parseNode($node->var));
     }
 
+    private function parseConstStmt(Stmt\Const_ $node): string
+    {
+        $consts = [];
+
+        if (isset($node->consts)) {
+            foreach ($node->consts as $const) {
+                $consts[] = $this->parseNode($const);
+            }
+        }
+
+        return implode("\n", $consts) . ";";
+    }
+
+    private function parseConst(Const_ $node): string
+    {
+        return Composer::const($node->name, $this->parseNode($node->value));
+    }
+
     private function parseNode(mixed $node): string
     {
         return match (get_class($node)) {
-            Stmt\Expression::class => $this->parseExpression($node) . ";",
-            Stmt\Echo_::class => $this->parseEcho($node) . ";",
-            Stmt\Function_::class => $this->parseFunction($node),
-            Stmt\Return_::class => $this->parseReturn($node) . ";",
-            Stmt\If_::class => $this->parseIf($node),
+            Stmt\Expression::class => $this->parseExpressionStmt($node),
+            Stmt\Echo_::class => $this->parseEchoStmt($node),
+            Stmt\Function_::class => $this->parseFunctionStmt($node),
+            Stmt\Return_::class => $this->parseReturnStmt($node),
+            Stmt\If_::class => $this->parseIfStmt($node),
+            Stmt\Const_::class => $this->parseConstStmt($node),
             Expr\Include_::class => $this->parseInclude($node),
             Expr\Assign::class => $this->parseAssign($node),
             Expr\BitwiseNot::class => $this->parseBitwiseNot($node),
@@ -229,6 +249,7 @@ class Js
             Expr\BinaryOp\Pow::class => $this->parseBinaryOp($node, "**"),
             Param::class => $this->parseParam($node),
             Arg::class => $this->parseArg($node),
+            Const_::class => $this->parseConst($node),
             Scalar\String_::class => $this->parseString($node),
             Scalar\Int_::class => $node->value,
             Scalar\Float_::class => $node->value,

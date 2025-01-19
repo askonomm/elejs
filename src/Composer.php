@@ -16,6 +16,11 @@ class Composer
         return "let $name = {$value}";
     }
 
+    public static function const(string $name, mixed $value): string
+    {
+        return "const {$name} = {$value}";
+    }
+
     public static function function(string $name, array $params, array $contents): string
     {
         $_js = "function {$name}(" . implode(', ', $params) . ") {\n";
