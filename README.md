@@ -3,7 +3,7 @@
 A library that transforms PHP code into JavaScript code, enabling you to write your front-end in your back-end.
 
 **Note** that it merely transpiles PHP into JavaScript, meaning that the behavior of code changes according to the differences 
-between the PHP and JavaScript runtimes.
+between the PHP and JavaScript runtimes. 
 
 ## Installation
 
@@ -37,7 +37,8 @@ There is no support for `__DIR__` or the like just yet, so only relative paths w
 
 ## Support
 
-Most of the things are not yet supported. Only very basic PHP can currently be transformed. 
+Most of the things are not yet supported. Only very basic PHP can currently be transformed. You can check the 
+[examples](https://github.com/askonomm/js/tree/master/examples) directory for what currently works.
 
 ### `Node/Expr`
 
