@@ -132,6 +132,11 @@ class Js
         );
     }
 
+    private function parseBooleanNot(Node\Expr\BooleanNot $node): string
+    {
+        return Composer::booleanNot($this->parseNode($node->expr));
+    }
+
     private function parseNode(mixed $node): string
     {
         return match(get_class($node)) {
@@ -142,8 +147,11 @@ class Js
             Node\Stmt\If_::class => $this->parseIf($node),
             Node\Expr\Include_::class => $this->parseInclude($node),
             Node\Expr\Assign::class => $this->parseAssign($node),
+            Node\Expr\BooleanNot::class => $this->parseBooleanNot($node),
             Node\Expr\Variable::class => $this->parseVariable($node),
             Node\Expr\FuncCall::class => $this->parseFunctionCall($node),
+            Node\Expr\BinaryOp\BitwiseOr::class => $this->parseBinaryOp($node, "|"),
+            Node\Expr\BinaryOp\BooleanOr::class => $this->parseBinaryOp($node, "||"),
             Node\Expr\BinaryOp\Plus::class => $this->parseBinaryOp($node, "+"),
             Node\Expr\BinaryOp\Minus::class => $this->parseBinaryOp($node, "-"),
             Node\Expr\BinaryOp\Identical::class => $this->parseBinaryOp($node, "==="),

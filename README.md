@@ -56,10 +56,10 @@ Most of the things are not yet supported. Only very basic PHP can currently be t
 - [ ] `AssignOp/ShiftLeft`
 - [ ] `AssignOp/ShiftRight`
 - [ ] `BinaryOp/BitwiseAnd`
-- [ ] `BinaryOp/BitwiseOr`
+- [x] `BinaryOp/BitwiseOr`
 - [ ] `BinaryOp/BitwiseXor`
 - [ ] `BinaryOp/BooleanAnd`
-- [ ] `BinaryOp/BooleanOr`
+- [x] `BinaryOp/BooleanOr`
 - [ ] `BinaryOp/Coalesce`
 - [ ] `BinaryOp/Concat`
 - [ ] `BinaryOp/Div`
@@ -98,7 +98,7 @@ Most of the things are not yet supported. Only very basic PHP can currently be t
 - [ ] `AssignRef`
 - [ ] `BinaryOp`
 - [ ] `BitwiseNot`
-- [ ] `BooleanNot`
+- [x] `BooleanNot`
 - [ ] `CallLike`
 - [ ] `Cast`
 - [ ] `ClassConstFetch`

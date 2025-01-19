@@ -44,6 +44,11 @@ class Composer
         return "{$left} {$op} {$right}";
     }
 
+    public static function booleanNot(string $value): string
+    {
+        return "!{$value}";
+    }
+
     public static function if(string $cond, array $contents): string
     {
         $_js = "if ({$cond}) {\n";
