@@ -127,7 +127,7 @@ class Js
     {
         if (!$this->rootDir) return "";
 
-        $path = match(get_class($node->expr)) {
+        $path = match (get_class($node->expr)) {
             Scalar\String_::class => $node->expr->value
         };
 
@@ -156,14 +156,33 @@ class Js
         return Composer::ternary($cond, $if, $else);
     }
 
+    private function parseAssignOp(Expr\AssignOp $node, string $op): string
+    {
+        return Composer::assignOp(
+            var: $this->parseNode($node->var),
+            op: $op,
+            value: $this->parseNode($node->expr)
+        );
+    }
+
+    private function parsePostInc(Expr\PostInc $node): string
+    {
+        return Composer::postInc($this->parseNode($node->var));
+    }
+
+    private function parsePostDec(Expr\PostDec $node): string
+    {
+        return Composer::postDec($this->parseNode($node->var));
+    }
+
     private function parseNode(mixed $node): string
     {
-        return match(get_class($node)) {
+        return match (get_class($node)) {
             Stmt\Expression::class => $this->parseExpression($node) . ";",
             Stmt\Echo_::class => $this->parseEcho($node) . ";",
-            Stmt\Function_::class => $this->parseFunction($node) . ";",
+            Stmt\Function_::class => $this->parseFunction($node),
             Stmt\Return_::class => $this->parseReturn($node) . ";",
-            Stmt\If_::class => $this->parseIf($node) . ";",
+            Stmt\If_::class => $this->parseIf($node),
             Expr\Include_::class => $this->parseInclude($node),
             Expr\Assign::class => $this->parseAssign($node),
             Expr\BitwiseNot::class => $this->parseBitwiseNot($node),
@@ -171,12 +190,26 @@ class Js
             Expr\Variable::class => $this->parseVariable($node),
             Expr\FuncCall::class => $this->parseFunctionCall($node),
             Expr\Ternary::class => $this->parseTernary($node),
+            Expr\PostInc::class => $this->parsePostInc($node),
+            Expr\PostDec::class => $this->parsePostDec($node),
+            Expr\AssignOp\Concat::class, Expr\AssignOp\Plus::class => $this->parseAssignOp($node, "+="),
+            Expr\AssignOp\Minus::class => $this->parseAssignOp($node, "-="),
+            Expr\AssignOp\Mul::class => $this->parseAssignOp($node, "*="),
+            Expr\AssignOp\BitwiseXor::class => $this->parseAssignOp($node, "^="),
+            Expr\AssignOp\BitwiseOr::class => $this->parseAssignOp($node, "|="),
+            Expr\AssignOp\BitwiseAnd::class => $this->parseAssignOp($node, "&="),
+            Expr\AssignOp\ShiftLeft::class => $this->parseAssignOp($node, "<<="),
+            Expr\AssignOp\ShiftRight::class => $this->parseAssignOp($node, ">>="),
+            Expr\AssignOp\Div::class => $this->parseAssignOp($node, "/="),
+            Expr\AssignOp\Mod::class => $this->parseAssignOp($node, "%="),
+            Expr\AssignOp\Pow::class => $this->parseAssignOp($node, "**="),
+            Expr\AssignOp\Coalesce::class => $this->parseAssignOp($node, "??="),
             Expr\BinaryOp\BitwiseAnd::class => $this->parseBinaryOp($node, "&"),
             Expr\BinaryOp\BitwiseOr::class => $this->parseBinaryOp($node, "|"),
             Expr\BinaryOp\BitwiseXor::class, Expr\BinaryOp\LogicalXor::class => $this->parseBinaryOp($node, "^"),
             Expr\BinaryOp\BooleanAnd::class, Expr\BinaryOp\LogicalAnd::class => $this->parseBinaryOp($node, "&&"),
             Expr\BinaryOp\BooleanOr::class, Expr\BinaryOp\LogicalOr::class => $this->parseBinaryOp($node, "||"),
-            Expr\BinaryOp\Plus::class => $this->parseBinaryOp($node, "+"),
+            Expr\BinaryOp\Plus::class, Expr\BinaryOp\Concat::class => $this->parseBinaryOp($node, "+"),
             Expr\BinaryOp\Minus::class => $this->parseBinaryOp($node, "-"),
             Expr\BinaryOp\Identical::class => $this->parseBinaryOp($node, "==="),
             Expr\BinaryOp\NotIdentical::class => $this->parseBinaryOp($node, "!=="),
@@ -192,7 +225,6 @@ class Js
             Expr\BinaryOp\SmallerOrEqual::class => $this->parseBinaryOp($node, "<="),
             Expr\BinaryOp\Spaceship::class => $this->parseBinaryOp($node, "<=>"),
             Expr\BinaryOp\Mul::class => $this->parseBinaryOp($node, "*"),
-            Expr\BinaryOp\Concat::class => $this->parseBinaryOp($node, "."),
             Expr\BinaryOp\Coalesce::class => $this->parseBinaryOp($node, "??"),
             Expr\BinaryOp\Pow::class => $this->parseBinaryOp($node, "**"),
             Param::class => $this->parseParam($node),

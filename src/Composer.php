@@ -24,7 +24,7 @@ class Composer
             $_js .= $content . "\n";
         }
 
-        $_js .= "\n}";
+        $_js .= "}";
 
         return $_js;
     }
@@ -48,6 +48,11 @@ class Composer
         return "{$left} {$op} {$right}";
     }
 
+    public static function assignOp(string $var, string $op, mixed $value): string
+    {
+        return "{$var} {$op} {$value}";
+    }
+
     public static function bitwiseNot(string $value): string
     {
         return "~{$value}";
@@ -66,7 +71,7 @@ class Composer
             $_js .= $content . "\n";
         }
 
-        $_js .= "\n}";
+        $_js .= "}";
 
         return $_js;
     }
@@ -78,5 +83,15 @@ class Composer
         }
 
         return "{$cond} ? {$if} : {$else}";
+    }
+
+    public static function postInc(string $var): string
+    {
+        return "{$var}++";
+    }
+
+    public static function postDec(string $var): string
+    {
+        return "{$var}--";
     }
 }

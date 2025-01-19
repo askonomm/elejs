@@ -42,19 +42,19 @@ Most of the things are not yet supported. Only very basic PHP can currently be t
 
 ### `Node/Expr`
 
-- [ ] `AssignOp/BitwiseAnd`
-- [ ] `AssignOp/BitwiseOr`
-- [ ] `AssignOp/BitwiseXor`
-- [ ] `AssignOp/Coalesce`
-- [ ] `AssignOp/Concat`
-- [ ] `AssignOp/Div`
-- [ ] `AssignOp/Minus`
-- [ ] `AssignOp/Mod`
-- [ ] `AssignOp/Mul`
-- [ ] `AssignOp/Plus`
-- [ ] `AssignOp/Pow`
-- [ ] `AssignOp/ShiftLeft`
-- [ ] `AssignOp/ShiftRight`
+- [x] `AssignOp/BitwiseAnd`
+- [x] `AssignOp/BitwiseOr`
+- [x] `AssignOp/BitwiseXor`
+- [x] `AssignOp/Coalesce`
+- [x] `AssignOp/Concat`
+- [x] `AssignOp/Div`
+- [x] `AssignOp/Minus`
+- [x] `AssignOp/Mod`
+- [x] `AssignOp/Mul`
+- [x] `AssignOp/Plus`
+- [x] `AssignOp/Pow`
+- [x] `AssignOp/ShiftLeft`
+- [x] `AssignOp/ShiftRight`
 - [x] `BinaryOp/BitwiseAnd`
 - [x] `BinaryOp/BitwiseOr`
 - [x] `BinaryOp/BitwiseXor`
@@ -121,8 +121,8 @@ Most of the things are not yet supported. Only very basic PHP can currently be t
 - [ ] `New_`
 - [ ] `NullsafeMethodCall`
 - [ ] `NullsafePropertyFetch`
-- [ ] `PostDec`
-- [ ] `PostInc`
+- [x] `PostDec`
+- [x] `PostInc`
 - [ ] `PreDec`
 - [ ] `PreInc`
 - [ ] `Print_`
