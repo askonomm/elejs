@@ -72,7 +72,7 @@ Most of the things are not yet supported. Only very basic PHP can currently be t
 - [ ] `BinaryOp/LogicalXor`
 - [x] `BinaryOp/Minus`
 - [x] `BinaryOp/Mod`
-- [ ] `BinaryOp/Mul`
+- [x] `BinaryOp/Mul`
 - [x] `BinaryOp/NotEqual`
 - [x] `BinaryOp/NotIdentical`
 - [x] `BinaryOp/Plus`
