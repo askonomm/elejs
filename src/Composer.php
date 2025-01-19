@@ -41,6 +41,10 @@ class Composer
 
     public static function binaryOp(mixed $left, mixed $right, string $op): string
     {
+        if ($op === "<=>") {
+            return "Math.sign({$left} - {$right})";
+        }
+
         return "{$left} {$op} {$right}";
     }
 
