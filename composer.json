@@ -1,0 +1,19 @@
+{
+    "name": "asko/js",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Asko\\Js\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Asko Nõmm",
+            "email": "asko@nmm.ee"
+        }
+    ],
+    "require": {
+        "nikic/php-parser": "^5.4",
+        "crell/fp": "^1.0"
+    }
+}
