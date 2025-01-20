@@ -300,35 +300,43 @@ class Js
         $class = $this->parseNode($node->class);
         $classStr = $class;
 
-        if ($class === "Jsi") {
+        // todo: check use statements
+
+        if (str_starts_with($class, "Jsi")) {
             $classStr = "Asko\Js\\{$class}";
         }
 
-        $name = $this->parseNode($node->name);
-        $args = array_map(fn($x) => $this->parseNode($x), $node->getArgs());
-
         // Js interop
-        if ($classStr === "Asko\Js\\Jsi") {
-            $prettyPrinter = new \PhpParser\PrettyPrinter\Standard;
-
+        if (str_starts_with($classStr, "Asko\Js\Jsi")) {
             // Is this callable a JsInterop?
             try {
                 $reflectionClass = new \ReflectionClass($classStr);
-                $reflectionMethod = $reflectionClass->getMethod($name);
-                $attributes = $reflectionMethod->getAttributes(JsInterop::class);
+                $classAttributes = $reflectionClass->getAttributes(JsInterop::class);
 
-                if (!empty($attributes)) {
-                    $node->class = new Name($classStr);
-                    $node->name = new Identifier("_{$node->name}");
+                // Whole class is an interop
+                if (!empty($classAttributes)) {
+                    $class = str_replace('Jsi\\', '', $node->class->name);
 
-                    return eval("return " . $prettyPrinter->prettyPrintExpr($node) . ";");
+                    return $this->parseNode(new Expr\StaticCall(new Name($class), $node->name, $node->args));
+                }
+
+                $reflectionMethod = $reflectionClass->getMethod($this->parseNode($node->name));
+                $methodAttributes = $reflectionMethod->getAttributes(JsInterop::class);
+
+                // Method is an interop
+                if (!empty($methodAttributes)) {
+                    return $this->parseNode(new Expr\FuncCall($node->name, $node->getArgs()));
                 }
             } catch(\ReflectionException) {
-                return "[js-interop: {$classStr}]";
+                return "[js-interop error: {$classStr}]";
             }
         }
 
-        return Composer::staticCall($class, $name, $args);
+        return Composer::staticCall(
+            class: $class,
+            name: $this->parseNode($node->name),
+            args: array_map(fn($x) => $this->parseNode($x), $node->getArgs())
+        );
     }
 
     public function parseNew(Expr\New_ $node): string

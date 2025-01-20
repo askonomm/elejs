@@ -1,3 +1,6 @@
 <?php
 
-Asko\Js\Jsi::alert("Test JS alert");
+use Asko\Js\Jsi;
+
+Jsi::alert(123);
+Jsi\Document::querySelector(".selector");

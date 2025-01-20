@@ -67,11 +67,11 @@ Most of the things are not yet supported. Only very basic PHP can currently be t
 The JavaScript API parts which need to be implemented for being able to call JS API's from PHP.
 
 - [x] `Jsi::alert`
-- [ ] `Jsi::document()->getElementById`
-- [ ] `Jsi::document()->getElementsByClassName`
-- [ ] `Jsi::document()->getElementsByTagName`
-- [ ] `Jsi::document()->querySelector`
-- [ ] `Jsi::document()->querySelectorAll`
+- [ ] `Jsi\Document::getElementById`
+- [ ] `Jsi\Document::getElementsByClassName`
+- [ ] `Jsi\Document::getElementsByTagName`
+- [ ] `Jsi\Document::querySelector`
+- [ ] `Jsi\Document::querySelectorAll`
 
 ### PHP Support
 
