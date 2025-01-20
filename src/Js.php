@@ -388,7 +388,7 @@ class Js
         );
     }
 
-    public function parseNew(Expr\New_ $node): string
+    private function parseNew(Expr\New_ $node): string
     {
         return Composer::new(
             class: $this->parseNode($node->class),
@@ -396,23 +396,28 @@ class Js
         );
     }
 
-    public function parseName(Name $node): string
+    private function parseName(Name $node): string
     {
         return $node->name;
     }
 
-    public function parseFullyQualifiedName(Name\FullyQualified $node): string
+    private function parseFullyQualifiedName(Name\FullyQualified $node): string
     {
         return $node->name;
     }
 
-    public function parseClosure(Expr\Closure $node): string
+    private function parseClosure(Expr\Closure $node): string
     {
         return Composer::closure(
             static: $node->static,
             params: array_map(fn($x) => $this->parseNode($x), $node->getParams()),
             stmts: array_map(fn($x) => $this->parseNode($x), $node->getStmts()),
         );
+    }
+
+    private function parseNamespaceStmt(Stmt\Namespace_ $node): string
+    {
+        return implode("\n", array_map(fn($x) => $this->parseNode($x), $node->stmts));
     }
 
     private function parseNode(mixed $node): string
@@ -428,6 +433,7 @@ class Js
             Stmt\ClassMethod::class => $this->parseClassMethodStmt($node),
             Stmt\Property::class => $this->parsePropertyStmt($node),
             Stmt\Use_::class => "",
+            Stmt\Namespace_::class => $this->parseNamespaceStmt($node),
             Expr\PropertyFetch::class => $this->parsePropertyFetch($node),
             Expr\Array_::class => $this->parseArray($node),
             Expr\Include_::class => $this->parseInclude($node),

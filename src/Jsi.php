@@ -2,10 +2,13 @@
 
 namespace Asko\Js;
 
-use Asko\Js\Attributes\JsInteropFunction;
+use Asko\Js\Attributes\JsInteropClass;
+use Asko\Js\Jsi\Traits\HasEventTarget;
 
+#[JsInteropClass(name: 'window')]
 class Jsi
 {
-    #[JsInteropFunction]
-    public static function alert(mixed $message): void {}
+    use HasEventTarget;
+
+    public function alert(mixed $message): void {}
 }

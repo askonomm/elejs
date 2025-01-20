@@ -2,11 +2,14 @@
 
 namespace Asko\Js\Jsi\Traits;
 
+/**
+ * @template T of object
+ */
 trait HasEventTarget
 {
     /**
      * @param string $type
-     * @param callable $listener
+     * @param (callable(T): void) $listener
      * @param array|null $options
      * @return void
      */
@@ -15,7 +18,7 @@ trait HasEventTarget
 
     /**
      * @param string $type
-     * @param callable $listener
+     * @param (callable(T): void) $listener
      * @return void
      */
     public function removeEventListener(string $type, callable $listener): void
