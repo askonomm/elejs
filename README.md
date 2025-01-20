@@ -106,7 +106,7 @@ meaning you can't call JS API's from PHP.
 - [ ] `Clone_`
 - [ ] `Closure`
 - [ ] `ClosureUse`
-- [ ] `ConstFetch`
+- [x] `ConstFetch`
 - [ ] `Empty_`
 - [ ] `Error`
 - [ ] `ErrorSuppress`

@@ -215,6 +215,11 @@ class Js
         return "{$this->parseNode($node->key)}: {$this->parseNode($node->value)}";
     }
 
+    private function parseConstFetch(Expr\ConstFetch $node): string
+    {
+        return $node->name;
+    }
+
     private function parseNode(mixed $node): string
     {
         return match (get_class($node)) {
@@ -234,6 +239,7 @@ class Js
             Expr\Ternary::class => $this->parseTernary($node),
             Expr\PostInc::class => $this->parsePostInc($node),
             Expr\PostDec::class => $this->parsePostDec($node),
+            Expr\ConstFetch::class => $this->parseConstFetch($node),
             Expr\AssignOp\Concat::class, Expr\AssignOp\Plus::class => $this->parseAssignOp($node, "+="),
             Expr\AssignOp\Minus::class => $this->parseAssignOp($node, "-="),
             Expr\AssignOp\Mul::class => $this->parseAssignOp($node, "*="),
