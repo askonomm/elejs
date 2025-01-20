@@ -5,6 +5,7 @@ namespace Asko\Js;
 use Asko\Js\Attributes\JsInterop;
 use Asko\Js\Attributes\JsInteropClass;
 use Asko\Js\Attributes\JsInteropFunction;
+use Asko\Js\Attributes\JsInteropMethod;
 use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Const_;
 use PhpParser\Node\Identifier;
@@ -313,17 +314,33 @@ class Js
                         $iteropClassName = $jsInteropClass->name;
                     }
 
+                    $reflectionMethod = $reflectionClass->getMethod($node->name->name);
+                    $JsInteropMethodAttributes = $reflectionMethod->getAttributes(JsInteropMethod::class);
+
+                    if (!empty($JsInteropMethodAttributes)) {
+                        /** @var JsInteropMethod $jsInteropMethod */
+                        $jsInteropMethod = $JsInteropMethodAttributes[0]->newInstance();
+
+                        if ($jsInteropMethod->isProperty) {
+                            return Composer::staticCall($iteropClassName, $name, $args, [
+                                'nameAsProperty' => true
+                            ]);
+                        }
+                    }
+
                     return Composer::staticCall($iteropClassName, $name, $args);
                 }
 
                 $reflectionMethod = $reflectionClass->getMethod($node->name->name);
-                $methodAttributes = $reflectionMethod->getAttributes(JsInteropFunction::class);
+
+                // JsInteropFunction
+                $JsInteropFunctionAttributes = $reflectionMethod->getAttributes(JsInteropFunction::class);
 
                 // Method is an interop
-                if (!empty($methodAttributes)) {
-                    /** @var JsInteropFunction $jsInteropFunction */
+                if (!empty($JsInteropFunctionAttributes)) {
                     $iteropMethodName = $node->name->name;
-                    $jsInteropFunction = $methodAttributes[0]->newInstance();
+                    /** @var JsInteropFunction $jsInteropFunction */
+                    $jsInteropFunction = $JsInteropFunctionAttributes[0]->newInstance();
 
                     if ($jsInteropFunction->name) {
                         $iteropMethodName = $jsInteropFunction->name;
@@ -341,46 +358,6 @@ class Js
 
     private function parseStaticCall(Expr\StaticCall $node): string
     {
-        // Js interop
-        if (str_starts_with($node->class->name, "Asko\Js\Jsi")) {
-            try {
-                $reflectionClass = new \ReflectionClass($node->class->name);
-                $classAttributes = $reflectionClass->getAttributes(JsInteropClass::class);
-
-                // Whole class is an interop
-                if (!empty($classAttributes)) {
-                    $iteropClassName = str_replace('Asko\Js\Jsi\\', '', $node->class->name);
-
-                    /** @var JsInteropClass $jsInteropClass */
-                    $jsInteropClass = $classAttributes[0]->newInstance();
-
-                    if ($jsInteropClass->name) {
-                        $iteropClassName = $jsInteropClass->name;
-                    }
-
-                    return $this->parseNode(new Expr\StaticCall(new Name($iteropClassName), $node->name, $node->args));
-                }
-
-                $reflectionMethod = $reflectionClass->getMethod($node->name->name);
-                $methodAttributes = $reflectionMethod->getAttributes(JsInteropFunction::class);
-
-                // Method is an interop
-                if (!empty($methodAttributes)) {
-                    /** @var JsInteropFunction $jsInteropFunction */
-                    $iteropMethodName = $node->name->name;
-                    $jsInteropFunction = $methodAttributes[0]->newInstance();
-
-                    if ($jsInteropFunction->name) {
-                        $iteropMethodName = $jsInteropFunction->name;
-                    }
-
-                    return $this->parseNode(new Expr\FuncCall(new Name($iteropMethodName), $node->getArgs()));
-                }
-            } catch(\ReflectionException) {
-                return "[js-interop error: {$node->class->name}]";
-            }
-        }
-
         return Composer::staticCall(
             class: $node->class->name,
             name: $this->parseNode($node->name),

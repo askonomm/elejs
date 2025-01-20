@@ -182,8 +182,12 @@ class Composer
         return "{$var}.{$name}(" . implode(', ', $args) . ")";
     }
 
-    public static function staticCall(string $class, string $name, array $args): string
+    public static function staticCall(string $class, string $name, array $args, array $opts = []): string
     {
+        if (isset($opts['nameAsProperty']) && $opts['nameAsProperty']) {
+            return "{$class}.{$name}";
+        }
+
         return "{$class}.{$name}(" . implode(', ', $args) . ")";
     }
 

@@ -13,3 +13,5 @@ class Router
         });
     }
 }
+
+(new Jsi)->location()->pathName;
