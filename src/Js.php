@@ -94,7 +94,7 @@ class Js
         }
 
         if ($node->var instanceof Expr\ArrayDimFetch) {
-            return Composer::assign($this->parseNode($node->var), $this->parseNode($node->expr));
+            return Composer::methodCall($this->parseNode($node->var), "push", [$this->parseNode($node->expr)]);
         }
 
         return Composer::var($this->parseNode($node->var), $this->parseNode($node->expr));
@@ -403,7 +403,7 @@ class Js
 
     private function parseArrayDimFetch(Expr\ArrayDimFetch $node): string
     {
-        return Composer::arrayDimFetch($this->parseNode($node->var));
+        return $this->parseNode($node->var);
     }
 
     private function parseNode(mixed $node): string
