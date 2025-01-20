@@ -47,7 +47,7 @@ class Composer
     public static function return(mixed $var): string
     {
         if (empty($var)) {
-            return "return;";
+            return "return";
         }
 
         return "return {$var}";
