@@ -166,7 +166,7 @@ meaning you can't call JS API's from PHP.
 - [ ] `Break_`
 - [ ] `Case_`
 - [ ] `Catch_`
-- [ ] `Class_`
+- [x] `Class_`
 - [ ] `ClassConst`
 - [ ] `ClassLike`
 - [ ] `ClassMethod`
@@ -195,7 +195,7 @@ meaning you can't call JS API's from PHP.
 - [ ] `Label`
 - [ ] `Namespace_`
 - [ ] `Nop`
-- [ ] `Property`
+- [x] `Property`
 - [ ] `PropertyProperty`
 - [x] `Return_`
 - [ ] `Static_`
@@ -230,11 +230,11 @@ meaning you can't call JS API's from PHP.
 - [ ] `NullableType`
 - [x] `Param`
 - [ ] `PropertyHook`
-- [ ] `PropertyItem`
+- [x] `PropertyItem`
 - [ ] `Scalar`
 - [ ] `StaticVar`
 - [ ] `Stmt`
 - [ ] `UnionType`
 - [ ] `UseItem`
-- [ ] `VarLikeIdentifier`
+- [x] `VarLikeIdentifier`
 - [ ] `VariadicPlaceholder`

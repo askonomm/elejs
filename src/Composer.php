@@ -109,4 +109,26 @@ class Composer
     {
         return "{" . implode(', ', $items) . "}";
     }
+
+    public static function class(string $name, array $contents): string
+    {
+        $_js = "class {$name} {\n";
+
+        foreach ($contents as $content) {
+            $_js .= $content . "\n";
+        }
+
+        $_js .= "}";
+
+        return $_js;
+    }
+
+    public static function property(string $name, mixed $default): string
+    {
+        if (!$default) {
+            return "{$name}";
+        }
+
+        return "{$name} = {$default}";
+    }
 }

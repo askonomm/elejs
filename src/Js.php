@@ -4,11 +4,13 @@ namespace Asko\Js;
 
 use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Const_;
+use PhpParser\Node\PropertyItem;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Scalar;
 use PhpParser\Node\Param;
 use PhpParser\Node\Arg;
+use PhpParser\Node\VarLikeIdentifier;
 use PhpParser\ParserFactory;
 use PhpParser\PhpVersion;
 use Crell;
@@ -220,6 +222,40 @@ class Js
         return $node->name;
     }
 
+    private function parseClassStmt(Stmt\Class_ $node): string
+    {
+        var_dump($node);
+
+        return Composer::class(
+            name: $node->name,
+            contents: array_map(fn($x) => $this->parseNode($x), $node->stmts)
+        );
+    }
+
+    private function parsePropertyStmt(Stmt\Property $node): string
+    {
+        $properties = [];
+
+        foreach($node->props as $prop) {
+            $properties[] = $this->parseNode($prop);
+        }
+
+        return implode("\n", $properties) . ";";
+    }
+
+    private function parsePropertyItem(PropertyItem $node): string
+    {
+        return Composer::property(
+            name: $this->parseNode($node->name),
+            default: $this->parseNode($node->default)
+        );
+    }
+
+    private function parseVarLikeIdentifier(VarLikeIdentifier $node): string
+    {
+        return $node->name;
+    }
+
     private function parseNode(mixed $node): string
     {
         return match (get_class($node)) {
@@ -229,6 +265,8 @@ class Js
             Stmt\Return_::class => $this->parseReturnStmt($node),
             Stmt\If_::class => $this->parseIfStmt($node),
             Stmt\Const_::class => $this->parseConstStmt($node),
+            Stmt\Class_::class => $this->parseClassStmt($node),
+            Stmt\Property::class => $this->parsePropertyStmt($node),
             Expr\Array_::class => $this->parseArray($node),
             Expr\Include_::class => $this->parseInclude($node),
             Expr\Assign::class => $this->parseAssign($node),
@@ -279,9 +317,11 @@ class Js
             Scalar\Int_::class => $node->value,
             Scalar\Float_::class => $node->value,
             Param::class => $this->parseParam($node),
+            PropertyItem::class => $this->parsePropertyItem($node),
             Arg::class => $this->parseArg($node),
             ArrayItem::class => $this->parseArrayItem($node),
             Const_::class => $this->parseConst($node),
+            VarLikeIdentifier::class => $this->parseVarLikeIdentifier($node),
             default => "[" . get_class($node) . " not supported yet]"
         };
     }
