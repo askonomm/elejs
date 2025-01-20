@@ -93,6 +93,10 @@ class Js
             return Composer::propertyVar($this->parseNode($node->var), $this->parseNode($node->expr));
         }
 
+        if ($node->var instanceof Expr\ArrayDimFetch) {
+            return Composer::assign($this->parseNode($node->var), $this->parseNode($node->expr));
+        }
+
         return Composer::var($this->parseNode($node->var), $this->parseNode($node->expr));
     }
 
@@ -397,8 +401,15 @@ class Js
         return implode("\n", array_map(fn($x) => $this->parseNode($x), $node->stmts));
     }
 
+    private function parseArrayDimFetch(Expr\ArrayDimFetch $node): string
+    {
+        return Composer::arrayDimFetch($this->parseNode($node->var));
+    }
+
     private function parseNode(mixed $node): string
     {
+        if (!$node) return "";
+
         return match (get_class($node)) {
             Stmt\Expression::class => $this->parseExpressionStmt($node),
             Stmt\Echo_::class => $this->parseEchoStmt($node),
@@ -427,6 +438,7 @@ class Js
             Expr\StaticCall::class => $this->parseStaticCall($node),
             Expr\New_::class => $this->parseNew($node),
             Expr\Closure::class => $this->parseClosure($node),
+            Expr\ArrayDimFetch::class => $this->parseArrayDimFetch($node),
             Expr\AssignOp\Concat::class, Expr\AssignOp\Plus::class => $this->parseAssignOp($node, "+="),
             Expr\AssignOp\Minus::class => $this->parseAssignOp($node, "-="),
             Expr\AssignOp\Mul::class => $this->parseAssignOp($node, "*="),

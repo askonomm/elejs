@@ -11,6 +11,11 @@ class Composer
         return "console.log($varsStr)";
     }
 
+    public static function assign(string $name, mixed $value): string
+    {
+        return "{$name} = {$value}";
+    }
+
     public static function var(string $name, mixed $value): string
     {
         return "let {$name} = {$value}";
@@ -207,5 +212,10 @@ class Composer
         $_js .= "}";
 
         return $_js;
+    }
+
+    public static function arrayDimFetch(string $var): string
+    {
+        return "{$var}[]";
     }
 }
