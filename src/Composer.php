@@ -182,6 +182,11 @@ class Composer
         return "{$var}.{$name}(" . implode(', ', $args) . ")";
     }
 
+    public static function staticCall(string $class, string $name, array $args): string
+    {
+        return "{$class}.{$name}(" . implode(', ', $args) . ")";
+    }
+
     public static function new(string $class, array $args): string
     {
         return "new {$class}(" . implode(', ', $args) . ")";

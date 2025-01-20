@@ -2,6 +2,7 @@
 
 namespace Asko\Js;
 
+use Asko\Js\Attributes\JsInterop;
 use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Const_;
 use PhpParser\Node\Identifier;
@@ -294,6 +295,42 @@ class Js
         return Composer::methodCall($var, $name, $args);
     }
 
+    private function parseStaticCall(Expr\StaticCall $node): string
+    {
+        $class = $this->parseNode($node->class);
+        $classStr = $class;
+
+        if ($class === "Jsi") {
+            $classStr = "Asko\Js\\{$class}";
+        }
+
+        $name = $this->parseNode($node->name);
+        $args = array_map(fn($x) => $this->parseNode($x), $node->getArgs());
+
+        // Js interop
+        if ($classStr === "Asko\Js\\Jsi") {
+            $prettyPrinter = new \PhpParser\PrettyPrinter\Standard;
+
+            // Is this callable a JsInterop?
+            try {
+                $reflectionClass = new \ReflectionClass($classStr);
+                $reflectionMethod = $reflectionClass->getMethod($name);
+                $attributes = $reflectionMethod->getAttributes(JsInterop::class);
+
+                if (!empty($attributes)) {
+                    $node->class = new Name($classStr);
+                    $node->name = new Identifier("_{$node->name}");
+
+                    return eval("return " . $prettyPrinter->prettyPrintExpr($node) . ";");
+                }
+            } catch(\ReflectionException) {
+                return "[js-interop: {$classStr}]";
+            }
+        }
+
+        return Composer::staticCall($class, $name, $args);
+    }
+
     public function parseNew(Expr\New_ $node): string
     {
         return Composer::new(
@@ -332,6 +369,7 @@ class Js
             Expr\PostDec::class => $this->parsePostDec($node),
             Expr\ConstFetch::class => $this->parseConstFetch($node),
             Expr\MethodCall::class => $this->parseMethodCall($node),
+            Expr\StaticCall::class => $this->parseStaticCall($node),
             Expr\New_::class => $this->parseNew($node),
             Expr\AssignOp\Concat::class, Expr\AssignOp\Plus::class => $this->parseAssignOp($node, "+="),
             Expr\AssignOp\Minus::class => $this->parseAssignOp($node, "-="),

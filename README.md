@@ -31,9 +31,31 @@ $js = Js::fromString(contents: '<?php echo "hello, world";', version: '8.4');
 // $js becomes: console.log("hello, world");
 ```
 
-If you also `include` other PHP files within your source PHP file / string, make sure to add the third 
-parameter `rootDir` to where the root of those includes will be, so that you can then do relative path declarations. 
+If you also `include` other PHP files within your source PHP file / string, make sure to add the third
+parameter `rootDir` to where the root of those includes will be, so that you can then do relative path declarations.
 There is no support for `__DIR__` or the like just yet, so only relative paths work.
+
+### JavaScript Interop 
+
+You can also call JS API's from your PHP, like so:
+
+```php
+use Asko\Js\Jsi;
+
+function my_func(): void {
+    Jsi::alert("Alert about something");
+}
+```
+
+Which would become the following JavaScript:
+
+```javascript
+function my_func() {
+    alert("Alert about something");
+}
+```
+
+Take a look at the [JavaScript Interop Support](#javscript-interop-support) for a list of API's supported.
 
 ## Support
 
@@ -41,7 +63,22 @@ Most of the things are not yet supported. Only very basic PHP can currently be t
 [examples](https://github.com/askonomm/js/tree/master/examples) directory for what works. There also is no JS interop yet, 
 meaning you can't call JS API's from PHP. 
 
-### `Node/Expr`
+### JavScript Interop Support
+
+The JavaScript API parts which need to be implemented for being able to call JS API's from PHP.
+
+- [x] `Jsi::alert`
+- [ ] `Jsi::document()->getElementById`
+- [ ] `Jsi::document()->getElementsByClassName`
+- [ ] `Jsi::document()->getElementsByTagName`
+- [ ] `Jsi::document()->querySelector`
+- [ ] `Jsi::document()->querySelectorAll`
+
+### PHP Support
+
+The [PHP-Parser](https://github.com/nikic/PHP-Parser) parts which need to be implemented for full PHP support.
+
+#### `Node/Expr`
 
 - [x] `AssignOp/BitwiseAnd`
 - [x] `AssignOp/BitwiseOr`
@@ -129,7 +166,7 @@ meaning you can't call JS API's from PHP.
 - [ ] `Print_`
 - [x] `PropertyFetch`
 - [ ] `ShellExec`
-- [ ] `StaticCall`
+- [x] `StaticCall`
 - [ ] `StaticPropertyFetch`
 - [x] `Ternary`
 - [ ] `Throw_`
@@ -139,7 +176,7 @@ meaning you can't call JS API's from PHP.
 - [ ] `Yield_`
 - [ ] `YieldFrom`
 
-### `Node/Scalar`
+#### `Node/Scalar`
 
 - [ ] `MagicConst/Class_`
 - [ ] `MagicConst/Dir`
@@ -160,7 +197,7 @@ meaning you can't call JS API's from PHP.
 - [ ] `MagicConst`
 - [x] `String_`
 
-### `Node/Stmt`
+#### `Node/Stmt`
 
 - [ ] `Block`
 - [ ] `Break_`
