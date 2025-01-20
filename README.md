@@ -222,7 +222,7 @@ meaning you can't call JS API's from PHP.
 - [ ] `DeclareItem`
 - [ ] `Expr`
 - [ ] `FunctionLike`
-- [ ] `Identifier`
+- [x] `Identifier`
 - [ ] `InterpolatedStringPart`
 - [ ] `IntersectionType`
 - [ ] `MatchArm`
