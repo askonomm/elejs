@@ -5,6 +5,7 @@ namespace Asko\Js;
 use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Const_;
 use PhpParser\Node\Identifier;
+use PhpParser\Node\Name;
 use PhpParser\Node\PropertyItem;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Expr;
@@ -284,6 +285,28 @@ class Js
         return "{$this->parseNode($node->var)}.{$this->parseNode($node->name)}";
     }
 
+    private function parseMethodCall(Expr\MethodCall $node): string
+    {
+        $var = $this->parseNode($node->var);
+        $name = $this->parseNode($node->name);
+        $args = array_map(fn($x) => $this->parseNode($x), $node->getArgs());
+
+        return Composer::methodCall($var, $name, $args);
+    }
+
+    public function parseNew(Expr\New_ $node): string
+    {
+        return Composer::new(
+            class: $this->parseNode($node->class),
+            args: array_map(fn($x) => $this->parseNode($x), $node->getArgs())
+        );
+    }
+
+    public function parseName(Name $node): string
+    {
+        return $node->name;
+    }
+
     private function parseNode(mixed $node): string
     {
         return match (get_class($node)) {
@@ -308,6 +331,8 @@ class Js
             Expr\PostInc::class => $this->parsePostInc($node),
             Expr\PostDec::class => $this->parsePostDec($node),
             Expr\ConstFetch::class => $this->parseConstFetch($node),
+            Expr\MethodCall::class => $this->parseMethodCall($node),
+            Expr\New_::class => $this->parseNew($node),
             Expr\AssignOp\Concat::class, Expr\AssignOp\Plus::class => $this->parseAssignOp($node, "+="),
             Expr\AssignOp\Minus::class => $this->parseAssignOp($node, "-="),
             Expr\AssignOp\Mul::class => $this->parseAssignOp($node, "*="),
@@ -353,6 +378,7 @@ class Js
             Const_::class => $this->parseConst($node),
             VarLikeIdentifier::class => $this->parseVarLikeIdentifier($node),
             Identifier::class => $this->parseIdentifier($node),
+            Name::class => $this->parseName($node),
             default => "[" . get_class($node) . " not supported yet]"
         };
     }

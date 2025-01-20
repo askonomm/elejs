@@ -118,8 +118,8 @@ meaning you can't call JS API's from PHP.
 - [ ] `Isset_`
 - [ ] `List_`
 - [ ] `Match_`
-- [ ] `MethodCall`
-- [ ] `New_`
+- [x] `MethodCall`
+- [x] `New_`
 - [ ] `NullsafeMethodCall`
 - [ ] `NullsafePropertyFetch`
 - [x] `PostDec`
@@ -226,7 +226,7 @@ meaning you can't call JS API's from PHP.
 - [ ] `InterpolatedStringPart`
 - [ ] `IntersectionType`
 - [ ] `MatchArm`
-- [ ] `Name`
+- [x] `Name`
 - [ ] `NullableType`
 - [x] `Param`
 - [ ] `PropertyHook`

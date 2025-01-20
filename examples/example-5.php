@@ -21,3 +21,5 @@ class ClassB extends ClassA
         return ":)";
     }
 }
+
+(new ClassB("test 123"))->getSomeProperty();
