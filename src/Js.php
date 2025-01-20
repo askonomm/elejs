@@ -405,8 +405,6 @@ class Js
 
     private function parseForeachStmt(Stmt\Foreach_ $node): string
     {
-        var_dump($node);
-
         return Composer::foreach(
             expr: $this->parseNode($node->expr),
             keyVar: $this->parseNode($node->keyVar),
