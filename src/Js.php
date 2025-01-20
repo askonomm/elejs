@@ -4,6 +4,7 @@ namespace Asko\Js;
 
 use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Const_;
+use PhpParser\Node\Identifier;
 use PhpParser\Node\PropertyItem;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Expr;
@@ -69,7 +70,7 @@ class Js
         return Composer::function(
             name: $node->name->name,
             params: array_map(fn($x) => $this->parseNode($x), $node->params),
-            contents: array_map(fn($p) => $this->parseNode($p), $node->stmts)
+            stmts: array_map(fn($p) => $this->parseNode($p), $node->stmts)
         );
     }
 
@@ -80,7 +81,11 @@ class Js
 
     private function parseAssign(Expr\Assign $node): string
     {
-        return Composer::var($node->var->name, $this->parseNode($node->expr));
+        if ($node->var instanceof Expr\PropertyFetch) {
+            return Composer::propertyVar($this->parseNode($node->var), $this->parseNode($node->expr));
+        }
+
+        return Composer::var($this->parseNode($node->var), $this->parseNode($node->expr));
     }
 
     private function parseVariable(Expr\Variable $node): string
@@ -123,7 +128,7 @@ class Js
     {
         return Composer::if(
             cond: $this->parseNode($node->cond),
-            contents: array_map(fn($x) => $this->parseNode($x), $node->stmts)
+            stmts: array_map(fn($x) => $this->parseNode($x), $node->stmts)
         );
     }
 
@@ -228,7 +233,16 @@ class Js
 
         return Composer::class(
             name: $node->name,
-            contents: array_map(fn($x) => $this->parseNode($x), $node->stmts)
+            stmts: array_map(fn($x) => $this->parseNode($x), $node->stmts)
+        );
+    }
+
+    private function parseClassMethodStmt(Stmt\ClassMethod $node): string
+    {
+        return Composer::classMethod(
+            name: $this->parseNode($node->name) === "__construct" ? "constructor" : $node->name,
+            params: array_map(fn($x) => $this->parseNode($x), $node->params),
+            stmts: array_map(fn($x) => $this->parseNode($x), $node->stmts)
         );
     }
 
@@ -256,6 +270,16 @@ class Js
         return $node->name;
     }
 
+    private function parseIdentifier(Identifier $node): string
+    {
+        return $node->name;
+    }
+
+    private function parsePropertyFetch(Expr\PropertyFetch $node): string
+    {
+        return "{$this->parseNode($node->var)}.{$this->parseNode($node->name)}";
+    }
+
     private function parseNode(mixed $node): string
     {
         return match (get_class($node)) {
@@ -266,7 +290,9 @@ class Js
             Stmt\If_::class => $this->parseIfStmt($node),
             Stmt\Const_::class => $this->parseConstStmt($node),
             Stmt\Class_::class => $this->parseClassStmt($node),
+            Stmt\ClassMethod::class => $this->parseClassMethodStmt($node),
             Stmt\Property::class => $this->parsePropertyStmt($node),
+            Expr\PropertyFetch::class => $this->parsePropertyFetch($node),
             Expr\Array_::class => $this->parseArray($node),
             Expr\Include_::class => $this->parseInclude($node),
             Expr\Assign::class => $this->parseAssign($node),
@@ -322,6 +348,7 @@ class Js
             ArrayItem::class => $this->parseArrayItem($node),
             Const_::class => $this->parseConst($node),
             VarLikeIdentifier::class => $this->parseVarLikeIdentifier($node),
+            Identifier::class => $this->parseIdentifier($node),
             default => "[" . get_class($node) . " not supported yet]"
         };
     }

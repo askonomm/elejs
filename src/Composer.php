@@ -13,7 +13,12 @@ class Composer
 
     public static function var(string $name, mixed $value): string
     {
-        return "let $name = {$value}";
+        return "let {$name} = {$value}";
+    }
+
+    public static function propertyVar(string $name, mixed $value): string
+    {
+        return "{$name} = {$value}";
     }
 
     public static function const(string $name, mixed $value): string
@@ -21,12 +26,12 @@ class Composer
         return "const {$name} = {$value}";
     }
 
-    public static function function(string $name, array $params, array $contents): string
+    public static function function(string $name, array $params, array $stmts): string
     {
         $_js = "function {$name}(" . implode(', ', $params) . ") {\n";
 
-        foreach ($contents as $content) {
-            $_js .= $content . "\n";
+        foreach ($stmts as $stmt) {
+            $_js .= $stmt . "\n";
         }
 
         $_js .= "}";
@@ -68,12 +73,12 @@ class Composer
         return "!{$value}";
     }
 
-    public static function if(string $cond, array $contents): string
+    public static function if(string $cond, array $stmts): string
     {
         $_js = "if ({$cond}) {\n";
 
-        foreach ($contents as $content) {
-            $_js .= $content . "\n";
+        foreach ($stmts as $stmt) {
+            $_js .= $stmt . "\n";
         }
 
         $_js .= "}";
@@ -110,12 +115,25 @@ class Composer
         return "{" . implode(', ', $items) . "}";
     }
 
-    public static function class(string $name, array $contents): string
+    public static function class(string $name, array $stmts): string
     {
         $_js = "class {$name} {\n";
 
-        foreach ($contents as $content) {
-            $_js .= $content . "\n";
+        foreach ($stmts as $stmt) {
+            $_js .= $stmt . "\n";
+        }
+
+        $_js .= "}";
+
+        return $_js;
+    }
+
+    public static function classMethod(string $name, array $params, array $stmts): string
+    {
+        $_js = "{$name}(" . implode(', ', $params) . ") {\n";
+
+        foreach ($stmts as $stmt) {
+            $_js .= $stmt . "\n";
         }
 
         $_js .= "}";

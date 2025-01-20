@@ -127,7 +127,7 @@ meaning you can't call JS API's from PHP.
 - [ ] `PreDec`
 - [ ] `PreInc`
 - [ ] `Print_`
-- [ ] `PropertyFetch`
+- [x] `PropertyFetch`
 - [ ] `ShellExec`
 - [ ] `StaticCall`
 - [ ] `StaticPropertyFetch`
@@ -169,7 +169,7 @@ meaning you can't call JS API's from PHP.
 - [x] `Class_`
 - [ ] `ClassConst`
 - [ ] `ClassLike`
-- [ ] `ClassMethod`
+- [x] `ClassMethod`
 - [x] `Const_`
 - [ ] `Continue_`
 - [ ] `Declare_`
