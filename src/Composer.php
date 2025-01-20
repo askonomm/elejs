@@ -191,4 +191,17 @@ class Composer
     {
         return "new {$class}(" . implode(', ', $args) . ")";
     }
+
+    public static function closure(bool $static, array $params, array $stmts): string
+    {
+        $_js = "(" . implode(', ', $params) . ") => {\n";
+
+        foreach ($stmts as $stmt) {
+            $_js .= $stmt . "\n";
+        }
+
+        $_js .= "}";
+
+        return $_js;
+    }
 }

@@ -2,11 +2,10 @@
 
 namespace Asko\Js;
 
-use Asko\Js\Attributes\JsInterop;
+use Asko\Js\Attributes\JsInteropFunction;
 
 class Jsi
 {
-    #[JsInterop]
-    public static function alert(mixed $message): void
-    {}
+    #[JsInteropFunction]
+    public static function alert(mixed $message): void {}
 }

@@ -1,0 +1,202 @@
+# PHP Support
+
+A list of [PHP-Parser](https://github.com/nikic/PHP-Parser) parts which need to be implemented for full PHP support, and 
+the current status of said implementations.
+
+#### `Node/Expr`
+
+- [x] `AssignOp/BitwiseAnd`
+- [x] `AssignOp/BitwiseOr`
+- [x] `AssignOp/BitwiseXor`
+- [x] `AssignOp/Coalesce`
+- [x] `AssignOp/Concat`
+- [x] `AssignOp/Div`
+- [x] `AssignOp/Minus`
+- [x] `AssignOp/Mod`
+- [x] `AssignOp/Mul`
+- [x] `AssignOp/Plus`
+- [x] `AssignOp/Pow`
+- [x] `AssignOp/ShiftLeft`
+- [x] `AssignOp/ShiftRight`
+- [x] `BinaryOp/BitwiseAnd`
+- [x] `BinaryOp/BitwiseOr`
+- [x] `BinaryOp/BitwiseXor`
+- [x] `BinaryOp/BooleanAnd`
+- [x] `BinaryOp/BooleanOr`
+- [x] `BinaryOp/Coalesce`
+- [x] `BinaryOp/Concat`
+- [x] `BinaryOp/Div`
+- [x] `BinaryOp/Equal`
+- [x] `BinaryOp/Greater`
+- [x] `BinaryOp/GreaterOrEqual`
+- [x] `BinaryOp/Identical`
+- [x] `BinaryOp/LogicalAnd`
+- [x] `BinaryOp/LogicalOr`
+- [x] `BinaryOp/LogicalXor`
+- [x] `BinaryOp/Minus`
+- [x] `BinaryOp/Mod`
+- [x] `BinaryOp/Mul`
+- [x] `BinaryOp/NotEqual`
+- [x] `BinaryOp/NotIdentical`
+- [x] `BinaryOp/Plus`
+- [x] `BinaryOp/Pow`
+- [x] `BinaryOp/ShiftLeft`
+- [x] `BinaryOp/ShiftRight`
+- [x] `BinaryOp/Smaller`
+- [x] `BinaryOp/SmallerOrEqual`
+- [x] `BinaryOp/Spaceship`
+- [ ] `Cast/Array_`
+- [ ] `Cast/Bool_`
+- [ ] `Cast/Double`
+- [ ] `Cast/Int_`
+- [ ] `Cast/Object_`
+- [ ] `Cast/String_`
+- [ ] `Cast/Unset_`
+- [x] `Array_`
+- [ ] `ArrayDimFetch`
+- [ ] `ArrayItem`
+- [ ] `ArrowFunction`
+- [x] `Assign`
+- [ ] `AssignOp`
+- [ ] `AssignRef`
+- [ ] `BinaryOp`
+- [x] `BitwiseNot`
+- [x] `BooleanNot`
+- [ ] `CallLike`
+- [ ] `Cast`
+- [ ] `ClassConstFetch`
+- [ ] `Clone_`
+- [x] `Closure`
+- [ ] `ClosureUse`
+- [x] `ConstFetch`
+- [ ] `Empty_`
+- [ ] `Error`
+- [ ] `ErrorSuppress`
+- [ ] `Eval_`
+- [ ] `Exit_`
+- [x] `FuncCall`
+- [x] `Include_`
+- [ ] `Instanceof_`
+- [ ] `Isset_`
+- [ ] `List_`
+- [ ] `Match_`
+- [x] `MethodCall`
+- [x] `New_`
+- [ ] `NullsafeMethodCall`
+- [ ] `NullsafePropertyFetch`
+- [x] `PostDec`
+- [x] `PostInc`
+- [ ] `PreDec`
+- [ ] `PreInc`
+- [ ] `Print_`
+- [x] `PropertyFetch`
+- [ ] `ShellExec`
+- [x] `StaticCall`
+- [ ] `StaticPropertyFetch`
+- [x] `Ternary`
+- [ ] `Throw_`
+- [ ] `UnaryMinus`
+- [ ] `UnaryPlus`
+- [x] `Variable`
+- [ ] `Yield_`
+- [ ] `YieldFrom`
+
+#### `Node/Scalar`
+
+- [ ] `MagicConst/Class_`
+- [ ] `MagicConst/Dir`
+- [ ] `MagicConst/File`
+- [ ] `MagicConst/Function_`
+- [ ] `MagicConst/Line`
+- [ ] `MagicConst/Method`
+- [ ] `MagicConst/Namespace_`
+- [ ] `MagicConst/Property`
+- [ ] `MagicConst/Trait_`
+- [ ] `DNumber`
+- [ ] `Encapsed`
+- [ ] `EncapsedStringPart`
+- [x] `Float_`
+- [x] `Int_`
+- [ ] `InterpolatedString`
+- [ ] `LNumber`
+- [ ] `MagicConst`
+- [x] `String_`
+
+#### `Node/Stmt`
+
+- [ ] `Block`
+- [ ] `Break_`
+- [ ] `Case_`
+- [ ] `Catch_`
+- [x] `Class_`
+- [ ] `ClassConst`
+- [ ] `ClassLike`
+- [x] `ClassMethod`
+- [x] `Const_`
+- [ ] `Continue_`
+- [ ] `Declare_`
+- [ ] `DeclareDeclare`
+- [ ] `Do_`
+- [x] `Echo_`
+- [ ] `Else_`
+- [ ] `ElseIf_`
+- [ ] `Enum_`
+- [ ] `EnumCase`
+- [x] `Expression`
+- [ ] `Finally_`
+- [ ] `For_`
+- [ ] `Foreach_`
+- [x] `Function_`
+- [ ] `Global_`
+- [ ] `Goto_`
+- [ ] `GroupUse`
+- [ ] `HaltCompiler`
+- [x] `If_`
+- [ ] `InlineHTML`
+- [ ] `Interface_`
+- [ ] `Label`
+- [ ] `Namespace_`
+- [ ] `Nop`
+- [x] `Property`
+- [ ] `PropertyProperty`
+- [x] `Return_`
+- [ ] `Static_`
+- [ ] `StaticVar`
+- [ ] `Switch_`
+- [ ] `Trait_`
+- [ ] `TraitUse`
+- [ ] `TraitUseAdaptation`
+- [ ] `TryCatch`
+- [ ] `Unset_`
+- [x] `Use_`
+- [ ] `UseUse`
+- [ ] `While_`
+
+### `Node/`
+
+- [x] `Arg`
+- [x] `ArrayItem`
+- [ ] `Attribute`
+- [ ] `AttributeGroup`
+- [ ] `ClosureUse`
+- [ ] `ComplexType`
+- [x] `Const_`
+- [ ] `DeclareItem`
+- [ ] `Expr`
+- [ ] `FunctionLike`
+- [x] `Identifier`
+- [ ] `InterpolatedStringPart`
+- [ ] `IntersectionType`
+- [ ] `MatchArm`
+- [x] `Name`
+- [ ] `NullableType`
+- [x] `Param`
+- [ ] `PropertyHook`
+- [x] `PropertyItem`
+- [ ] `Scalar`
+- [ ] `StaticVar`
+- [ ] `Stmt`
+- [ ] `UnionType`
+- [ ] `UseItem`
+- [x] `VarLikeIdentifier`
+- [ ] `VariadicPlaceholder`

@@ -2,21 +2,13 @@
 
 namespace Asko\Js\Jsi;
 
-use Asko\Js\Attributes\JsInterop;
+use Asko\Js\Attributes\JsInteropClass;
+use Asko\Js\Jsi\Traits\HasEventTarget;
+use Asko\Js\Jsi\Traits\Queryable;
 
-#[JsInterop]
+#[JsInteropClass(name: "document")]
 class Document
 {
-    public static function querySelector(string $selector): Element  {
-        return new Element();
-    }
-
-    /**
-     * @param string $selector
-     * @return Element[]
-     */
-    public static function querySelectorAll(string $selector): array
-    {
-        return [];
-    }
+    use HasEventTarget;
+    use Queryable;
 }
