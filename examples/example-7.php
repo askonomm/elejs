@@ -1,13 +1,23 @@
 <?php
 
-namespace Asko\Elefe\Js;
+//namespace Asko\Elefe\Js;
+//
+//use PDO;
+//
+//class Router
+//{
+//    private array $routes = [];
+//
+//    public function addRoute($route): void
+//    {
+//        $this->routes[] = $route;
+//    }
+//}
 
-class Router
-{
-    private array $routes = [];
+namespace Test;
+    class TestClass {
 
-    public function addRoute($route): void
-    {
-        $this->routes[] = $route;
     }
-}
+
+
+$asd = new \Test\TestClass();
