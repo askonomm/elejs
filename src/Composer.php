@@ -115,9 +115,13 @@ class Composer
         return "{" . implode(', ', $items) . "}";
     }
 
-    public static function class(string $name, array $stmts): string
+    public static function class(string $name, array $stmts, ?string $extends = null): string
     {
-        $_js = "class {$name} {\n";
+        if ($extends) {
+            $_js = "class {$name} extends {$extends} {\n";
+        } else {
+            $_js = "class {$name} {\n";
+        }
 
         foreach ($stmts as $stmt) {
             $_js .= $stmt . "\n";
@@ -128,9 +132,15 @@ class Composer
         return $_js;
     }
 
-    public static function classMethod(string $name, array $params, array $stmts): string
+    public static function classMethod(string $name, array $params, array $stmts, bool $static = false): string
     {
-        $_js = "{$name}(" . implode(', ', $params) . ") {\n";
+        $_js = "";
+
+        if ($static) {
+            $_js .= "static ";
+        }
+
+        $_js .= "{$name}(" . implode(', ', $params) . ") {\n";
 
         foreach ($stmts as $stmt) {
             $_js .= $stmt . "\n";
@@ -148,5 +158,22 @@ class Composer
         }
 
         return "{$name} = {$default}";
+    }
+
+    public static function propertyStmt(array $properties, bool $static = false, bool $private = false): string
+    {
+        $_js = "";
+
+        if ($static) {
+            $_js .= "static ";
+        }
+
+        if ($private) {
+            $_js .= "#";
+        }
+
+        $_js .= implode("\n", $properties) . ";";
+
+        return $_js;
     }
 }

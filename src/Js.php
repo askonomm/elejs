@@ -229,11 +229,10 @@ class Js
 
     private function parseClassStmt(Stmt\Class_ $node): string
     {
-        var_dump($node);
-
         return Composer::class(
             name: $node->name,
-            stmts: array_map(fn($x) => $this->parseNode($x), $node->stmts)
+            stmts: array_map(fn($x) => $this->parseNode($x), $node->stmts),
+            extends: $node->extends,
         );
     }
 
@@ -241,8 +240,9 @@ class Js
     {
         return Composer::classMethod(
             name: $this->parseNode($node->name) === "__construct" ? "constructor" : $node->name,
-            params: array_map(fn($x) => $this->parseNode($x), $node->params),
-            stmts: array_map(fn($x) => $this->parseNode($x), $node->stmts)
+            params: array_map(fn($x) => $this->parseNode($x), $node->getParams()),
+            stmts: array_map(fn($x) => $this->parseNode($x), $node->getStmts()),
+            static: $node->isStatic(),
         );
     }
 
@@ -254,14 +254,18 @@ class Js
             $properties[] = $this->parseNode($prop);
         }
 
-        return implode("\n", $properties) . ";";
+        return Composer::propertyStmt(
+            properties: $properties,
+            static: $node->isStatic(),
+            private: $node->isPrivate(),
+        );
     }
 
     private function parsePropertyItem(PropertyItem $node): string
     {
         return Composer::property(
             name: $this->parseNode($node->name),
-            default: $this->parseNode($node->default)
+            default: $this->parseNode($node->default),
         );
     }
 

@@ -1,6 +1,10 @@
 <?php
 
-class SomeClass
+class ClassA {
+
+}
+
+class ClassB extends ClassA
 {
     private $someProperty = "";
 
@@ -11,5 +15,9 @@ class SomeClass
 
     public function getSomeProperty() {
         return $this->someProperty;
+    }
+
+    public static function someStaticFn() {
+        return ":)";
     }
 }
