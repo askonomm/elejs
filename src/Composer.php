@@ -173,10 +173,6 @@ class Composer
             $_js .= "static ";
         }
 
-        if ($private) {
-            $_js .= "#";
-        }
-
         $_js .= implode("\n", $properties) . ";";
 
         return $_js;

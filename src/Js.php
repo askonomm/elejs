@@ -268,8 +268,7 @@ class Js
 
         return Composer::propertyStmt(
             properties: $properties,
-            static: $node->isStatic(),
-            private: $node->isPrivate(),
+            static: $node->isStatic()
         );
     }
 

@@ -2,6 +2,12 @@
 
 namespace Asko\Elefe\Js;
 
-$arr = [];
+class Router
+{
+    private array $routes = [];
 
-$arr[] = "a";
+    public function addRoute($route): void
+    {
+        $this->routes[] = $route;
+    }
+}
