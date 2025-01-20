@@ -221,7 +221,7 @@ class Composer
         if ($keyVar) {
             $_js .= "for (const [{$keyVar}, {$valueVar}] of {$expr}) {\n";
         } else {
-            $_js = "for (const {$valueVar} of {$expr}) {\n";
+            $_js .= "for (const {$valueVar} of {$expr}) {\n";
         }
 
         foreach ($stmts as $stmt) {
