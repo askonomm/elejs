@@ -403,6 +403,18 @@ class Js
         return $this->parseNode($node->var);
     }
 
+    private function parseForeachStmt(Stmt\Foreach_ $node): string
+    {
+        var_dump($node);
+
+        return Composer::foreach(
+            expr: $this->parseNode($node->expr),
+            keyVar: $this->parseNode($node->keyVar),
+            valueVar: $this->parseNode($node->valueVar),
+            stmts: array_map(fn($x) => $this->parseNode($x), $node->stmts)
+        );
+    }
+
     private function parseNode(mixed $node): string
     {
         if (!$node) return "";
@@ -419,6 +431,7 @@ class Js
             Stmt\Property::class => $this->parsePropertyStmt($node),
             Stmt\Use_::class => "",
             Stmt\Namespace_::class => $this->parseNamespaceStmt($node),
+            Stmt\Foreach_::class => $this->parseForeachStmt($node),
             Expr\PropertyFetch::class => $this->parsePropertyFetch($node),
             Expr\Array_::class => $this->parseArray($node),
             Expr\Include_::class => $this->parseInclude($node),

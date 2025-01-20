@@ -214,4 +214,23 @@ class Composer
     {
         return "{$var}[]";
     }
+
+    public static function foreach($expr, $keyVar, $valueVar, array $stmts): string
+    {
+        $_js = "";
+
+        if ($keyVar) {
+            $_js .= "for (const [{$keyVar}, {$valueVar}] of {$expr}) {\n";
+        } else {
+            $_js = "for (const {$valueVar} of {$expr}) {\n";
+        }
+
+        foreach ($stmts as $stmt) {
+            $_js .= $stmt . "\n";
+        }
+
+        $_js .= "}";
+
+        return $_js;
+    }
 }

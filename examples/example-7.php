@@ -14,10 +14,10 @@
 //    }
 //}
 
-namespace Test;
-    class TestClass {
+foreach([1, 2, 3] as $x) {
+    echo $x;
+}
 
-    }
-
-
-$asd = new \Test\TestClass();
+foreach([1, 2, 3] as $k => $x) {
+    echo $k;
+}
