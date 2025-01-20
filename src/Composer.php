@@ -46,6 +46,10 @@ class Composer
 
     public static function return(mixed $var): string
     {
+        if (empty($var)) {
+            return "return;";
+        }
+
         return "return {$var}";
     }
 
@@ -208,11 +212,6 @@ class Composer
         $_js .= "}";
 
         return $_js;
-    }
-
-    public static function arrayDimFetch(string $var): string
-    {
-        return "{$var}[]";
     }
 
     public static function foreach($expr, $keyVar, $valueVar, array $stmts): string
