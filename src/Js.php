@@ -299,57 +299,59 @@ class Js
         $name = $this->parseNode($node->name);
         $args = array_map(fn($x) => $this->parseNode($x), $node->getArgs());
 
-        try {
-            $reflectionClass = new \ReflectionClass($node->var->class->name ?? "");
-            $classAttributes = $reflectionClass->getAttributes(JsInteropClass::class);
+        if (isset($node->var->class)) {
+            try {
+                $reflectionClass = new \ReflectionClass($node->var->class->name ?? "");
+                $classAttributes = $reflectionClass->getAttributes(JsInteropClass::class);
 
-            // Whole class is an interop
-            if (!empty($classAttributes)) {
-                $iteropClassName = $node->var->class->name;
+                // Whole class is an interop
+                if (!empty($classAttributes)) {
+                    $iteropClassName = $node->var->class->name;
 
-                /** @var JsInteropClass $jsInteropClass */
-                $jsInteropClass = $classAttributes[0]->newInstance();
+                    /** @var JsInteropClass $jsInteropClass */
+                    $jsInteropClass = $classAttributes[0]->newInstance();
 
-                if ($jsInteropClass->name) {
-                    $iteropClassName = $jsInteropClass->name;
+                    if ($jsInteropClass->name) {
+                        $iteropClassName = $jsInteropClass->name;
+                    }
+
+                    $reflectionMethod = $reflectionClass->getMethod($node->name->name);
+                    $JsInteropMethodAttributes = $reflectionMethod->getAttributes(JsInteropMethod::class);
+
+                    if (!empty($JsInteropMethodAttributes)) {
+                        /** @var JsInteropMethod $jsInteropMethod */
+                        $jsInteropMethod = $JsInteropMethodAttributes[0]->newInstance();
+
+                        if ($jsInteropMethod->isProperty) {
+                            return Composer::staticCall($iteropClassName, $name, $args, [
+                                'nameAsProperty' => true
+                            ]);
+                        }
+                    }
+
+                    return Composer::staticCall($iteropClassName, $name, $args);
                 }
 
                 $reflectionMethod = $reflectionClass->getMethod($node->name->name);
-                $JsInteropMethodAttributes = $reflectionMethod->getAttributes(JsInteropMethod::class);
 
-                if (!empty($JsInteropMethodAttributes)) {
-                    /** @var JsInteropMethod $jsInteropMethod */
-                    $jsInteropMethod = $JsInteropMethodAttributes[0]->newInstance();
+                // JsInteropFunction
+                $JsInteropFunctionAttributes = $reflectionMethod->getAttributes(JsInteropFunction::class);
 
-                    if ($jsInteropMethod->isProperty) {
-                        return Composer::staticCall($iteropClassName, $name, $args, [
-                            'nameAsProperty' => true
-                        ]);
+                // Method is an interop
+                if (!empty($JsInteropFunctionAttributes)) {
+                    $iteropMethodName = $node->name->name;
+                    /** @var JsInteropFunction $jsInteropFunction */
+                    $jsInteropFunction = $JsInteropFunctionAttributes[0]->newInstance();
+
+                    if ($jsInteropFunction->name) {
+                        $iteropMethodName = $jsInteropFunction->name;
                     }
+
+                    return $this->parseNode(new Expr\FuncCall(new Name($iteropMethodName), $node->getArgs()));
                 }
-
-                return Composer::staticCall($iteropClassName, $name, $args);
+            } catch (\ReflectionException $e) {
+                return "[js-interop error: {$node->var?->class}]";
             }
-
-            $reflectionMethod = $reflectionClass->getMethod($node->name->name);
-
-            // JsInteropFunction
-            $JsInteropFunctionAttributes = $reflectionMethod->getAttributes(JsInteropFunction::class);
-
-            // Method is an interop
-            if (!empty($JsInteropFunctionAttributes)) {
-                $iteropMethodName = $node->name->name;
-                /** @var JsInteropFunction $jsInteropFunction */
-                $jsInteropFunction = $JsInteropFunctionAttributes[0]->newInstance();
-
-                if ($jsInteropFunction->name) {
-                    $iteropMethodName = $jsInteropFunction->name;
-                }
-
-                return $this->parseNode(new Expr\FuncCall(new Name($iteropMethodName), $node->getArgs()));
-            }
-        } catch(\ReflectionException $e) {
-            return "[js-interop error: {$node->var?->class}]";
         }
 
         return Composer::methodCall($this->parseNode($node->var), $name, $args);
