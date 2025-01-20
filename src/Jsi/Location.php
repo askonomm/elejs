@@ -9,10 +9,10 @@ class Location
 {
     public string $hash;
     public string $host;
-    public string $hostName;
+    public string $hostname;
     public string $href;
     public string $origin;
-    public string $pathName;
+    public string $pathname;
     public int $port;
     public string $protocol;
     public string $search;
