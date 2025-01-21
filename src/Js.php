@@ -368,8 +368,13 @@ class Js
 
     private function parseNew(Expr\New_ $node): string
     {
+        $class = match($this->parseNode($node->class)) {
+            "static", "self" => "this",
+            default => $this->parseNode($node->class)
+        };
+
         return Composer::new(
-            class: $this->parseNode($node->class),
+            class: $class,
             args: array_map(fn($x) => $this->parseNode($x), $node->getArgs())
         );
     }

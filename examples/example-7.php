@@ -14,10 +14,16 @@
 //    }
 //}
 
-foreach([1, 2, 3] as $x) {
-    echo $x;
-}
+class Test {
+    public function do() {
+        return new static();
+    }
 
-foreach([1, 2, 3] as $k => $x) {
-    echo $k;
+    public function do2() {
+        return new self();
+    }
+
+    public function do3() {
+        return new Test();
+    }
 }
