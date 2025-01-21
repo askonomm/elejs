@@ -14,16 +14,8 @@
 //    }
 //}
 
-class Test {
-    public function do() {
-        return new static();
-    }
-
-    public function do2() {
-        return new self();
-    }
-
-    public function do3() {
-        return new Test();
-    }
-}
+return match (true) {
+    true => "",
+    false => "",
+    default => ""
+};

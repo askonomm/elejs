@@ -418,6 +418,14 @@ class Js
         );
     }
 
+    private function parseMatch(Expr\Match_ $node): string
+    {
+        $cond = $this->parseNode($node->cond);
+        $arms = array_map(fn($x) => $this->parseNode($x), $node->arms);
+
+        return Composer::match($cond, $arms);
+    }
+
     private function parseNode(mixed $node): string
     {
         if (!$node) return "";
@@ -452,6 +460,7 @@ class Js
             Expr\New_::class => $this->parseNew($node),
             Expr\Closure::class => $this->parseClosure($node),
             Expr\ArrayDimFetch::class => $this->parseArrayDimFetch($node),
+            Expr\Match_::class => $this->parseMatch($node),
             Expr\AssignOp\Concat::class, Expr\AssignOp\Plus::class => $this->parseAssignOp($node, "+="),
             Expr\AssignOp\Minus::class => $this->parseAssignOp($node, "-="),
             Expr\AssignOp\Mul::class => $this->parseAssignOp($node, "*="),

@@ -232,4 +232,11 @@ class Composer
 
         return $_js;
     }
+
+    public static function match($cond, array $arms): string
+    {
+        $_js = "";
+
+        return $_js;
+    }
 }
