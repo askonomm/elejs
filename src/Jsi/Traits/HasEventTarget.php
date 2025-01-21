@@ -1,6 +1,6 @@
 <?php
 
-namespace Asko\Js\Jsi\Traits;
+namespace Asko\Elejs\Jsi\Traits;
 
 /**
  * @template T of object

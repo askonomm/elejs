@@ -1,10 +1,10 @@
 {
-    "name": "asko/js",
+    "name": "asko/elejs",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Asko\\Js\\": "src/"
+            "Asko\\Elejs\\": "src/"
         }
     },
     "authors": [

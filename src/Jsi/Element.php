@@ -1,10 +1,10 @@
 <?php
 
-namespace Asko\Js\Jsi;
+namespace Asko\Elejs\Jsi;
 
-use Asko\Js\Attributes\JsInteropClass;
-use Asko\Js\Jsi\Traits\HasEventTarget;
-use Asko\Js\Jsi\Traits\Queryable;
+use Asko\Elejs\Attributes\JsInteropClass;
+use Asko\Elejs\Jsi\Traits\HasEventTarget;
+use Asko\Elejs\Jsi\Traits\Queryable;
 
 #[JsInteropClass]
 class Element

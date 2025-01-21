@@ -15,7 +15,7 @@
 //}
 
 return match (true) {
-    true => "",
+    true, null => "",
     false => "",
-    default => ""
+    default => "default goes here"
 };

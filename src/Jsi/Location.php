@@ -1,8 +1,8 @@
 <?php
 
-namespace Asko\Js\Jsi;
+namespace Asko\Elejs\Jsi;
 
-use Asko\Js\Attributes\JsInteropClass;
+use Asko\Elejs\Attributes\JsInteropClass;
 
 #[JsInteropClass(name: "location")]
 class Location

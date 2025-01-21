@@ -1,22 +1,11 @@
 <?php
 
-namespace Asko\Js;
+namespace Asko\Elejs;
 
-use Asko\Js\Attributes\JsInteropClass;
-use Asko\Js\Attributes\JsInteropFunction;
-use Asko\Js\Attributes\JsInteropMethod;
-use Asko\Js\Jsi\Location;
-use Asko\Js\Jsi\Traits\HasEventTarget;
+use Asko\Elejs\Jsi\Window;
+use Asko\Elejs\Attributes\JsInteropClass;
 
 #[JsInteropClass(name: 'window')]
-class Jsi
+class Jsi extends Window
 {
-    use HasEventTarget;
-
-    public function alert(mixed $message): void {}
-
-    #[JsInteropMethod(isProperty: true)]
-    public function location(): Location {
-        return new Location();
-    }
 }

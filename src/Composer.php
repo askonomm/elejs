@@ -1,6 +1,6 @@
 <?php
 
-namespace Asko\Js;
+namespace Asko\Elejs;
 
 class Composer
 {
@@ -235,7 +235,29 @@ class Composer
 
     public static function match($cond, array $arms): string
     {
-        $_js = "";
+        $_js = "() => {\n";
+        $_js .= "\tconst jsMatchVar = {$cond};\n";
+
+        foreach($arms as $arm) {
+            $_js .= "\t{$arm}\n";
+        }
+
+        $_js .= "}";
+
+        return $_js;
+    }
+
+    public static function matchArm(array|null $conds, string $body): string
+    {
+        if (is_null($conds)) {
+            return Composer::return($body);
+        }
+
+        $conds = array_map(fn($c) => "jsMatchVar === {$c}", $conds);
+
+        $_js = "if (" . implode(' || ', $conds) . ") {\n";
+        $_js .= "\t\t" . Composer::return($body) . ";\n";
+        $_js .= "\t}";
 
         return $_js;
     }

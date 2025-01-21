@@ -1,13 +1,14 @@
 <?php
 
-namespace Asko\Js;
+namespace Asko\Elejs;
 
-use Asko\Js\Attributes\JsInteropClass;
-use Asko\Js\Attributes\JsInteropFunction;
-use Asko\Js\Attributes\JsInteropMethod;
+use Asko\Elejs\Attributes\JsInteropClass;
+use Asko\Elejs\Attributes\JsInteropFunction;
+use Asko\Elejs\Attributes\JsInteropMethod;
 use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Const_;
 use PhpParser\Node\Identifier;
+use PhpParser\Node\MatchArm;
 use PhpParser\Node\Name;
 use PhpParser\Node\PropertyItem;
 use PhpParser\Node\Stmt;
@@ -426,6 +427,14 @@ class Js
         return Composer::match($cond, $arms);
     }
 
+    private function parseMatchArm(MatchArm $node): string
+    {
+        $conds = $node->conds ? array_map(fn($x) => $this->parseNode($x), $node->conds) : null;
+        $body = $this->parseNode($node->body);
+
+        return Composer::matchArm($conds, $body);
+    }
+
     private function parseNode(mixed $node): string
     {
         if (!$node) return "";
@@ -508,6 +517,7 @@ class Js
             Identifier::class => $this->parseIdentifier($node),
             Name::class => $this->parseName($node),
             Name\FullyQualified::class => $this->parseFullyQualifiedName($node),
+            MatchArm::class => $this->parseMatchArm($node),
             default => "[" . get_class($node) . " not supported yet]"
         };
     }

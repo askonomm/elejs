@@ -1,6 +1,6 @@
 <?php
 
-namespace Asko\Js\Attributes;
+namespace Asko\Elejs\Attributes;
 
 #[\Attribute]
 class JsInteropMethod

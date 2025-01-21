@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8fee4a84db32d378a027323f31b66bbd",
+    "content-hash": "1d384d6754d1a8dc907fc6202232d10d",
     "packages": [
         {
             "name": "crell/fp",
@@ -141,7 +141,9 @@
     "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": {},
+    "platform": {
+        "php": "^8.4"
+    },
     "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }

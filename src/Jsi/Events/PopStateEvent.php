@@ -1,8 +1,8 @@
 <?php
 
-namespace Asko\Js\Jsi\Events;
+namespace Asko\Elejs\Jsi\Events;
 
-use Asko\Js\Jsi\Event;
+use Asko\Elejs\Jsi\Event;
 
 class PopStateEvent extends Event
 {

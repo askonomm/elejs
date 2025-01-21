@@ -1,6 +1,6 @@
 <?php
 
-namespace Asko\Js\Jsi;
+namespace Asko\Elejs\Jsi;
 
 class Event
 {

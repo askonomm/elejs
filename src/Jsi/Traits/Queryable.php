@@ -1,8 +1,8 @@
 <?php
 
-namespace Asko\Js\Jsi\Traits;
+namespace Asko\Elejs\Jsi\Traits;
 
-use Asko\Js\Jsi\Element;
+use Asko\Elejs\Jsi\Element;
 
 trait Queryable
 {

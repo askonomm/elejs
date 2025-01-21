@@ -1,7 +1,6 @@
 <?php
 
-use Asko\Js\Jsi;
-use Asko\Js\Jsi\Traits\HasEventTarget;
+use Asko\Elejs\Jsi;
 
 (new Jsi)->alert(123);
 

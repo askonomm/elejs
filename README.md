@@ -1,4 +1,4 @@
-# Js
+# EleJs
 
 A library that transforms PHP code into JavaScript code, enabling you to write your front-end in your back-end.
 
@@ -9,7 +9,7 @@ That said, a proof of concept is working, and demonstrates that it is indeed pos
 ## Installation
 
 ```shell
-composer require asko/js
+composer require asko/elejs
 ```
 
 ## Usage
