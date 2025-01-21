@@ -360,7 +360,7 @@ class Js
     private function parseStaticCall(Expr\StaticCall $node): string
     {
         return Composer::staticCall(
-            class: $node->class->name,
+            class: str_replace('\\', '_', $node->class->name),
             name: $this->parseNode($node->name),
             args: array_map(fn($x) => $this->parseNode($x), $node->getArgs())
         );
